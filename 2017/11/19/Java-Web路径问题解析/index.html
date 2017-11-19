@@ -62,7 +62,7 @@
 
 
 
-  <meta name="keywords" content="javaWeb," />
+  <meta name="keywords" content="路径问题," />
 
 
 
@@ -75,18 +75,18 @@
 
 
 
-<meta name="description" content="一、前言 最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：">
-<meta name="keywords" content="javaWeb">
+<meta name="description" content="基本概念的理解 绝对路径：绝对路径就是你的主页上的文件或目录在硬盘上真正的路径，(URL和物理路径)，例如：C:\xyz\test.txt；http://www.test.com/index.html； 相对路径：相对与某个基准目录的路径，例如：&amp;quot;/&amp;quot;代表Web应用的根目录，&amp;quot;./&amp;quot;代表当前目录,&amp;quot;../&amp;quot;代表上级目录。   另外关于UR">
+<meta name="keywords" content="路径问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="阿里云搭建java Web环境">
-<meta property="og:url" content="http://yoursite.com/2017/11/06/阿里云搭建java-Web环境/index.html">
+<meta property="og:title" content="Java Web路径问题解析">
+<meta property="og:url" content="http://yoursite.com/2017/11/19/Java-Web路径问题解析/index.html">
 <meta property="og:site_name" content="大迷毛|成长录">
-<meta property="og:description" content="一、前言 最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：">
+<meta property="og:description" content="基本概念的理解 绝对路径：绝对路径就是你的主页上的文件或目录在硬盘上真正的路径，(URL和物理路径)，例如：C:\xyz\test.txt；http://www.test.com/index.html； 相对路径：相对与某个基准目录的路径，例如：&amp;quot;/&amp;quot;代表Web应用的根目录，&amp;quot;./&amp;quot;代表当前目录,&amp;quot;../&amp;quot;代表上级目录。   另外关于UR">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-06T14:20:17.653Z">
+<meta property="og:updated_time" content="2017-11-19T09:34:57.581Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="阿里云搭建java Web环境">
-<meta name="twitter:description" content="一、前言 最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：">
+<meta name="twitter:title" content="Java Web路径问题解析">
+<meta name="twitter:description" content="基本概念的理解 绝对路径：绝对路径就是你的主页上的文件或目录在硬盘上真正的路径，(URL和物理路径)，例如：C:\xyz\test.txt；http://www.test.com/index.html； 相对路径：相对与某个基准目录的路径，例如：&amp;quot;/&amp;quot;代表Web应用的根目录，&amp;quot;./&amp;quot;代表当前目录,&amp;quot;../&amp;quot;代表上级目录。   另外关于UR">
 
 
 
@@ -116,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/06/阿里云搭建java-Web环境/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/19/Java-Web路径问题解析/"/>
 
 
 
 
 
-  <title>阿里云搭建java Web环境 | 大迷毛|成长录</title>
+  <title>Java Web路径问题解析 | 大迷毛|成长录</title>
   
 
 
@@ -297,7 +297,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/06/阿里云搭建java-Web环境/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/19/Java-Web路径问题解析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Gojay">
@@ -314,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">阿里云搭建java Web环境</h1>
+          <h1 class="post-title" itemprop="name headline">Java Web路径问题解析</h1>
         
 
         <div class="post-meta">
@@ -326,8 +326,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-06T21:59:10+08:00">
-                2017-11-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-19T17:06:29+08:00">
+                2017-11-19
               </time>
             
 
@@ -344,7 +344,7 @@
 
           
           
-             <span id="/2017/11/06/阿里云搭建java-Web环境/" class="leancloud_visitors" data-flag-title="阿里云搭建java Web环境">
+             <span id="/2017/11/19/Java-Web路径问题解析/" class="leancloud_visitors" data-flag-title="Java Web路径问题解析">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -369,7 +369,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,112
+                  1,215
                 </span>
               
 
@@ -406,75 +406,68 @@
       
 
       
-        <h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><hr>
-<p>最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：<br><a id="more"></a></p>
-<h1 id="二、配置阿里云"><a href="#二、配置阿里云" class="headerlink" title="二、配置阿里云"></a>二、配置阿里云</h1><hr>
-<p>阿里云有学生优惠9.9一个月的云服务器，可以直接购买配置，选择CentOS。我在活动期间购买时花了9.9买了.xin域名和域名解析1年，还送了阿里云一整套6个月：服务器、数据库、OSS等等。我目前只在云服务器下搭建java Web环境并发布项目，然后连接的云数据库。服务器和数据库的配置都比较简单，阿里云上也有官方文档可以查看，按着步骤一步步配置下来就行了。</p>
-<h1 id="三、工具准备"><a href="#三、工具准备" class="headerlink" title="三、工具准备"></a>三、工具准备</h1><hr>
-<p>我采用的是在Windows下开发，然后将项目发布在云服务器上。所以，首先需要在Windows下准备几个工具。</p>
-<h2 id="1、SecureCRT"><a href="#1、SecureCRT" class="headerlink" title="1、SecureCRT"></a>1、SecureCRT</h2><p>SecureCRT用于连接云服务器，能够在Windows下直接操作服务器。</p>
-<h3 id="安装SecureCRT："><a href="#安装SecureCRT：" class="headerlink" title="安装SecureCRT："></a>安装SecureCRT：</h3><blockquote>
-<p>下载SecureCRT及注册机<br>安装<br>打开注册机生成key<br>输入注册信息</p>
-</blockquote>
-<p>因为安装SercureCRT比较简单，这里就不过多介绍，在这里附上一个详细的<a href="http://www.cnblogs.com/qingtingzhe/articles/5008902.html" target="_blank" rel="external">安装步骤</a>。</p>
-<h3 id="连接："><a href="#连接：" class="headerlink" title="连接："></a>连接：</h3><blockquote>
-<p>输入ip、username、password建立session；<br>设置session选项；<code>（输出日志文件文件可以保存命令）</code><br>其他一些<a href="http://blog.csdn.net/sfslife/article/details/50923954" target="_blank" rel="external">个性化配置</a>可以参考。</p>
-</blockquote>
-<h2 id="2、FileZilla-FTP-Client"><a href="#2、FileZilla-FTP-Client" class="headerlink" title="2、FileZilla FTP Client"></a>2、FileZilla FTP Client</h2><p>FileZilla用于从Windows上传文件到服务器。</p>
-<h3 id="下载、安装FileZilla"><a href="#下载、安装FileZilla" class="headerlink" title="下载、安装FileZilla"></a>下载、安装FileZilla</h3><p>直接官网下载安装</p>
-<h3 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h3><p>输入sftp://ip，username，password（端口若无修改可以不填）</p>
-<h1 id="四、安装java-Web环境"><a href="#四、安装java-Web环境" class="headerlink" title="四、安装java Web环境"></a>四、安装java Web环境</h1><hr>
-<h2 id="1、安装JDK并配置环境变量"><a href="#1、安装JDK并配置环境变量" class="headerlink" title="1、安装JDK并配置环境变量"></a>1、安装JDK并配置环境变量</h2><h3 id="查看当前系统是否安装过JDK："><a href="#查看当前系统是否安装过JDK：" class="headerlink" title="查看当前系统是否安装过JDK："></a>查看当前系统是否安装过JDK：</h3><p><code>rpm -qa|grep java</code>（某些系统默认安装了JDK1.7）</p>
-<h3 id="如果有JDK，卸载："><a href="#如果有JDK，卸载：" class="headerlink" title="如果有JDK，卸载："></a>如果有JDK，卸载：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum -y remove java java-1.4.2-gcj-compat-1.4.2.0-4ojpp.155</div><div class="line">yum -y remove java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5</div></pre></td></tr></table></figure>
-<h3 id="上传并解压安装包："><a href="#上传并解压安装包：" class="headerlink" title="上传并解压安装包："></a>上传并解压安装包：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /usr/local</div><div class="line">mkdir jdk_home tomcat_home soft</div></pre></td></tr></table></figure>
-<p>通过Filezilla上传tar.gz压缩包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd soft</div><div class="line">tar -xvf jdk-8u144-linux-x64.tar.gz -C /usr/local/jdk_home</div></pre></td></tr></table></figure></p>
-<h3 id="配置JDK环境变量："><a href="#配置JDK环境变量：" class="headerlink" title="配置JDK环境变量："></a>配置JDK环境变量：</h3><ul>
-<li>打开文件：<code>vi /etc/profile</code>  </li>
-<li><p>将下列内容追加到末尾：</p>
-<blockquote>
-<p>#set java environment<br>  JAVA_HOME=/usr/local/jdk_home/jdk1.8<br>  CLASSPATH=.:$JAVA_HOME/lib/tools.jar<br>  PATH=$JAVA_HOME/bin:$PATH<br>  export JAVA_HOME CLASSPATH PATH  </p>
-</blockquote>
-</li>
-<li><p>使文件生效：<code>source /etc/profile</code></p>
-</li>
+        <h1 id="基本概念的理解"><a href="#基本概念的理解" class="headerlink" title="基本概念的理解"></a>基本概念的理解</h1><ul>
+<li><strong>绝对路径</strong>：绝对路径就是你的主页上的文件或目录在硬盘上真正的路径，(URL和物理路径)，例如：<code>C:\xyz\test.txt</code>；<code>http://www.test.com/index.html</code>；</li>
+<li><strong>相对路径</strong>：相对与某个基准目录的路径，例如：<code>&quot;/&quot;</code>代表Web应用的<code>根目录</code>，<code>&quot;./&quot;</code>代表<code>当前目录</code>,<code>&quot;../&quot;</code>代表<code>上级目录</code>。</li>
 </ul>
-<h3 id="查看java版本："><a href="#查看java版本：" class="headerlink" title="查看java版本："></a>查看java版本：</h3><p><code>java-version</code></p>
-<h2 id="2、安装MySQL并配置"><a href="#2、安装MySQL并配置" class="headerlink" title="2、安装MySQL并配置"></a>2、安装MySQL并配置</h2><h3 id="mysql的安装"><a href="#mysql的安装" class="headerlink" title="mysql的安装"></a>mysql的安装</h3><blockquote>
-<p>yum install mysql<br>yum install mysql-devel<br>yum install mysql-server（会出错）</p>
-</blockquote>
-<p><strong>CentOS 7将MySQL从默认的程序列表中移除，用mariadb代替了。</strong></p>
-<h3 id="官网下载安装mysql-server"><a href="#官网下载安装mysql-server" class="headerlink" title="官网下载安装mysql-server"></a>官网下载安装mysql-server</h3><blockquote>
-<p>wget <a href="http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm" target="_blank" rel="external">http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</a><br>rpm -ivh mysql-community-release-el7-5.noarch.rpm<br>yum install mysql-community-server</p>
-</blockquote>
-<h3 id="安装成功后重启mysql服务"><a href="#安装成功后重启mysql服务" class="headerlink" title="安装成功后重启mysql服务"></a>安装成功后重启mysql服务</h3><p><code>service mysqld restart</code></p>
-<h3 id="初次安装mysql，root账号没有密码"><a href="#初次安装mysql，root账号没有密码" class="headerlink" title="初次安装mysql，root账号没有密码"></a>初次安装mysql，root账号没有密码</h3><p><code>mysql -u root</code><br>设置密码：<code>set password for &#39;root&#39;@&#39;localhost&#39; =password(&#39;root&#39;);</code></p>
-<h3 id="安装完后mariadb自动被替换了，将不再生效"><a href="#安装完后mariadb自动被替换了，将不再生效" class="headerlink" title="安装完后mariadb自动被替换了，将不再生效"></a>安装完后mariadb自动被替换了，将不再生效</h3><p><code>rpm -qa |grep mariadb</code></p>
-<h3 id="配置mysql"><a href="#配置mysql" class="headerlink" title="配置mysql"></a>配置mysql</h3><ul>
-<li><p>编码：<br>打开mysql配置文件：<code>vi /etc/my.cnf</code><br>在最后追加编码配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mysql]  </div><div class="line">default-character-set =utf8</div></pre></td></tr></table></figure>
-</li>
-<li><p>远程连接设置：</p>
 <blockquote>
-<p>把在所有数据库的所有表的所有权限赋值给位于所有IP地址的root用户：<br><code>mysql&gt; grant all privileges on *.* to root@&#39;%&#39;identified by &#39;root&#39;;</code><br>如果是新用户而不是root，则要先新建用户:<br><code>mysql&gt; create user &#39;username&#39;@&#39;%&#39; identified by &#39;password&#39;;</code></p>
+<p>另外关于URI，URL,URN等内容，请参考RFC相关文档标准。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="关于JSP-Servlet中的相对路径和绝对路径"><a href="#关于JSP-Servlet中的相对路径和绝对路径" class="headerlink" title="关于JSP/Servlet中的相对路径和绝对路径"></a>关于JSP/Servlet中的相对路径和绝对路径</h1><h2 id="服务器端的地址"><a href="#服务器端的地址" class="headerlink" title="服务器端的地址"></a>服务器端的地址</h2><blockquote>
+<p>服务器端的相对地址指的是相对于你的web应用的地址，这个地址是在服务器端解析的（不同于<code>html</code>和<code>javascript</code>中的相对地址，他们是由客户端浏览器解析的）；<br>在jsp和servlet中的相对地址应该是相对于你的web应用，即相对于<code>http://192.168.0.1/webapp/</code>的。</p>
+</blockquote>
+<p>用到的地方：  </p>
+<ul>
+<li><strong>forward</strong>：servlet中的request.getRequestDispatcher(address);这个address是在服务器端解析的。<br><code>request.getRequestDispatcher(“/pages/a.jsp”)</code>的绝对路径地址：<br><code>http://192.168.0.1/webapp/pages/a.jsp</code>；</li>
+<li><strong>sendRedirect</strong>：在jsp中<code>&lt;%response.sendRedirect(&quot;/user/a.jsp&quot;);%&gt;</code>。</li>
+</ul>
+<h2 id="客户端的地址"><a href="#客户端的地址" class="headerlink" title="客户端的地址"></a>客户端的地址</h2><blockquote>
+<p>所有的html页面中的相对地址都是相对于服务器根目录<code>http://192.168.0.1/</code>的，而<code>不是</code>根目录下的该Web应用的目录：<code>http://192.168.0.1/webapp/</code>。</p>
+</blockquote>
+<ul>
+<li>HTML中的<strong>form表单的action属性</strong>的地址应该是相对于服务器根目录<code>http://192.168.0.1/</code>；如果提交到a.jsp为：<code>action＝&quot;/webapp/user/a.jsp&quot;</code>或<code>action=&quot;&lt;%=request.getContextPath()%&gt;&quot;/user/a.jsp</code>；</li>
+<li><strong>Javascript</strong>也是在客户端解析的，所以其相对路径和form表单一样。</li>
+</ul>
+<blockquote>
+<p>因此，一般情况下，在<code>JSP/HTML</code>页面等引用的<code>CSS</code>、<code>Javascript</code>、<code>Action</code>等属性前面最好都加上<code>&lt;%=request.getContextPath()%&gt;</code>,以确保所引用的文件都属于Web应用中的目录。<br>另外，应该尽量避免使用类似<code>&quot;.&quot;</code>,<code>&quot;./&quot;</code>,<code>&quot;../&quot;</code>等类似的相对该文件位置的相对路径，这样当文件移动时，很容易出问题。</p>
+</blockquote>
+<h2 id="站点根目录和css路径问题"><a href="#站点根目录和css路径问题" class="headerlink" title="站点根目录和css路径问题"></a>站点根目录和css路径问题</h2><blockquote>
+<p>当在<code>jsp中引入css</code>时，如果其相对路径相对于当前jsp文件的，而在一个和这个jsp的<code>路径不一样的servlet中forward</code>这个jsp时，就会发现这个css样式根本没有起作用。<br>这是因为在servlet中转发时<code>css的路径</code>就是相对于这个<code>servlet的相对路径</code>，而非jsp的路径了。<br>所以这时候不能在jsp中用这样的路径：<code>&lt;link href=&quot;one.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;</code>或者<code>&lt;link href=&quot;../../one.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;</code>。<br>这个时候要用站点根目录，就是相对于<code>http://192.168.0.1/</code>的目录，以<code>&quot;/&quot;</code>开头。<br>因此上述错误应更正为<code>href=”/test/one.css”</code> 类似的站点根目录的相对目录。</p>
+</blockquote>
+<h1 id="获得JSP-Servlet中当前应用的相对路径和绝对路径"><a href="#获得JSP-Servlet中当前应用的相对路径和绝对路径" class="headerlink" title="获得JSP/Servlet中当前应用的相对路径和绝对路径"></a>获得JSP/Servlet中当前应用的相对路径和绝对路径</h1><h2 id="JSP中获得当前应用的相对路径和绝对路径"><a href="#JSP中获得当前应用的相对路径和绝对路径" class="headerlink" title="JSP中获得当前应用的相对路径和绝对路径"></a>JSP中获得当前应用的相对路径和绝对路径</h2><ul>
+<li><strong>根目录</strong>所对应的绝对路径:<code>request.getRequestURI()</code>;</li>
+<li><strong>文件</strong>的绝对路径:<code>application.getRealPath(request.getRequestURI())</code>;</li>
+<li><strong>当前web应用</strong>的绝对路径:<code>application.getRealPath(&quot;/&quot;)</code>;</li>
+<li><strong>请求文件的上层目录</strong>:<code>new File(application.getRealPath(request.getRequestURI())).getParent()</code>;</li>
+</ul>
+<h2 id="Servlet中获得当前应用的相对路径和绝对路径"><a href="#Servlet中获得当前应用的相对路径和绝对路径" class="headerlink" title="Servlet中获得当前应用的相对路径和绝对路径"></a>Servlet中获得当前应用的相对路径和绝对路径</h2><ul>
+<li><strong>根目录</strong>所对应的绝对路径:<code>request.getServletPath()</code>;</li>
+<li><strong>文件</strong>的绝对路径:<br><code>request.getSession().getServletContext().
+getRealPath(request.getRequestURI())</code>;</li>
+<li><strong>当前web应用</strong>的绝对路径:<code>servletConfig.getServletContext().getRealPath(&quot;/&quot;)</code>;<blockquote>
+<p><strong>ServletContext对象</strong>获得几种方式：<br>javax.servlet.http.HttpSession.getServletContext();<br>javax.servlet.jsp.PageContext.getServletContext();<br>javax.servlet.ServletConfig.getServletContext(); </p>
 </blockquote>
 </li>
 </ul>
-<h3 id="测试mysql启动停止"><a href="#测试mysql启动停止" class="headerlink" title="测试mysql启动停止"></a>测试mysql启动停止</h3><p><code>service mysqld start/stop</code></p>
-<p><code>mysql的安装就到这里了，附上一个[详细说明](http://www.cnblogs.com/starof/p/4680083.html)。</code></p>
-<h2 id="3、安装Tomcat并配置"><a href="#3、安装Tomcat并配置" class="headerlink" title="3、安装Tomcat并配置"></a>3、安装Tomcat并配置</h2><h3 id="解析Tomact"><a href="#解析Tomact" class="headerlink" title="解析Tomact"></a>解析Tomact</h3><blockquote>
-<p>解压：tar -xvf apache-tomcat-9.0.0.M26.tar.gz -C /usr/local/tomcat_home；<br>重命名：mv apache-tomcat-9.0…. tomcat9</p>
+<h1 id="JAVA的Class中获得相对路径，绝对路径"><a href="#JAVA的Class中获得相对路径，绝对路径" class="headerlink" title="JAVA的Class中获得相对路径，绝对路径"></a>JAVA的Class中获得相对路径，绝对路径</h1><h2 id="单独的Java类中获得绝对路径"><a href="#单独的Java类中获得绝对路径" class="headerlink" title="单独的Java类中获得绝对路径"></a>单独的Java类中获得绝对路径</h2><blockquote>
+<p>根据<code>java.io.File</code>的Doc文挡，可知:<br> 默认情况下<code>new File(&quot;/&quot;)</code>代表的目录为：<code>System.getProperty(&quot;user.dir&quot;)</code>;<br>程序获得执行类的当前路径:</p>
 </blockquote>
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><blockquote>
-<p><code>vi /etc/profile</code><br>在文件最后追加配置：<br> #tomcat evn<br> CATALINA_HOME=/usr/local/tomcat_home/tomcat9<br> export CATALINA_HOME</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">import java.io.File;</div><div class="line">public class FileTest &#123;</div><div class="line">    public static void main(String[] args) throws Exception &#123;      </div><div class="line">        System.out.println(Thread.currentThread().getContextClassLoader().getResource(&quot;&quot;));    </div><div class="line">        System.out.println(FileTest.class.getClassLoader().getResource(&quot;&quot;));</div><div class="line">　      System.out.println(ClassLoader.getSystemResource(&quot;&quot;));        </div><div class="line">        System.out.println(FileTest.class.getResource(&quot;&quot;));        </div><div class="line">        System.out.println(FileTest.class.getResource(&quot;/&quot;));//Class文件所在路径  </div><div class="line">        System.out.println(new File(&quot;/&quot;).getAbsolutePath());   </div><div class="line">        System.out.println(System.getProperty(&quot;user.dir&quot;));    </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="服务器中的Java类获得当前路径"><a href="#服务器中的Java类获得当前路径" class="headerlink" title="服务器中的Java类获得当前路径"></a>服务器中的Java类获得当前路径</h2><h3 id="Weblogic"><a href="#Weblogic" class="headerlink" title="Weblogic"></a>Weblogic</h3><blockquote>
+<p>WebApplication的系统文件根目录是你的weblogic安装所在根目录。<br>例如：如果你的weblogic安装在<code>c:\bea\weblogic700.....</code><br>那么，你的文件根路径就是<code>c:\</code><br>所以，有两种方式能够让你访问你的服务器端的文件:  </p>
+<ol>
+<li>使用<strong>绝对路径</strong>：<br>比如将你的参数文件放在c:\yourconfig\yourconf.properties，直接使用<code>new FileInputStream(&quot;yourconfig/yourconf.properties&quot;)</code>;  </li>
+<li>使用<strong>相对路径</strong>：<br>相对路径的根目录就是你的<code>webapplication的根路径</code>，即WEB-INF的上一级目录，将你的参数文件放在<br><code>yourwebapp\yourconfig\yourconf.properties</code>，<br>这样使用：<code>new FileInputStream(&quot;./yourconfig/yourconf.properties&quot;)</code>;</li>
+</ol>
 </blockquote>
-<h3 id="配置tomcat的catalina-sh文件"><a href="#配置tomcat的catalina-sh文件" class="headerlink" title="配置tomcat的catalina.sh文件"></a>配置tomcat的catalina.sh文件</h3><blockquote>
-<p>cd $CATALINA_HOME/bin<br>vi catalina.sh<br>找到 # OS specific support，然后在这行下面添加以下配置：<br>CATALINA_HOME=/usr/local/tomcat_home/tomcat9<br>JAVA_HOME=/usr/local/jdk_home/jdk1.8</p>
+<h3 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h3><blockquote>
+<p>在类中输出<code>System.getProperty(&quot;user.dir&quot;);</code>显示的是<code>%Tomcat_Home%/bin</code></p>
 </blockquote>
-<h3 id="安装tomcat服务"><a href="#安装tomcat服务" class="headerlink" title="安装tomcat服务"></a>安装tomcat服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd $CATALINA_HOME/bin</div><div class="line">cp catalina.sh /etc/init.d/tomcat</div></pre></td></tr></table></figure>
-<h3 id="测试tomcat的启动和停用"><a href="#测试tomcat的启动和停用" class="headerlink" title="测试tomcat的启动和停用"></a>测试tomcat的启动和停用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">service tomcat start</div><div class="line">service tomcat stop</div></pre></td></tr></table></figure>
-<h3 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a><a href="http://blog.csdn.net/u011846257/article/details/54707864" target="_blank" rel="external">防火墙配置</a></h3><p><code>到这里Tomcat环境就已经搭建完成了，附上[参考文档](http://www.jianshu.com/p/b71296e8b9a7)。</code></p>
-<h1 id="五、更多配置"><a href="#五、更多配置" class="headerlink" title="五、更多配置"></a>五、更多配置</h1><hr>
-<p>这里只是简单地在阿里云的云服务器上搭建了java Web环境，其他的一些配置就需要以后有需求或者遇到困难的时候解决。</p>
+<h3 id="如何读相对路径哪"><a href="#如何读相对路径哪" class="headerlink" title="如何读相对路径哪?"></a>如何读相对路径哪?</h3><blockquote>
+<p>在Java文件中<code>getResource</code>或<code>getResourceAsStream</code>均可。<br>例：<code>getClass().getResourceAsStream(filePath)</code>;filePath可以是”/filename”,这里的/代表web发布根路径下<code>WEB-INF/classes</code>。</p>
+</blockquote>
+<p>参考文档：<a href="http://huttoncs.iteye.com/blog/2270670" target="_blank" rel="external">java路径问题</a></p>
 
       
     </div>
@@ -492,7 +485,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/javaWeb/" rel="tag"># javaWeb</a>
+            <a href="/tags/路径问题/" rel="tag"># 路径问题</a>
           
         </div>
       
@@ -505,8 +498,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/30/Markdown基本语法/" rel="next" title="Markdown基本语法">
-                <i class="fa fa-chevron-left"></i> Markdown基本语法
+              <a href="/2017/11/15/web编码问题详解/" rel="next" title="web编码问题详解">
+                <i class="fa fa-chevron-left"></i> web编码问题详解
               </a>
             
           </div>
@@ -514,10 +507,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/15/web编码问题详解/" rel="prev" title="web编码问题详解">
-                web编码问题详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -696,7 +685,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、配置阿里云"><span class="nav-number">2.</span> <span class="nav-text">二、配置阿里云</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、工具准备"><span class="nav-number">3.</span> <span class="nav-text">三、工具准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、SecureCRT"><span class="nav-number">3.1.</span> <span class="nav-text">1、SecureCRT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装SecureCRT："><span class="nav-number">3.1.1.</span> <span class="nav-text">安装SecureCRT：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接："><span class="nav-number">3.1.2.</span> <span class="nav-text">连接：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、FileZilla-FTP-Client"><span class="nav-number">3.2.</span> <span class="nav-text">2、FileZilla FTP Client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载、安装FileZilla"><span class="nav-number">3.2.1.</span> <span class="nav-text">下载、安装FileZilla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立连接"><span class="nav-number">3.2.2.</span> <span class="nav-text">建立连接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、安装java-Web环境"><span class="nav-number">4.</span> <span class="nav-text">四、安装java Web环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、安装JDK并配置环境变量"><span class="nav-number">4.1.</span> <span class="nav-text">1、安装JDK并配置环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看当前系统是否安装过JDK："><span class="nav-number">4.1.1.</span> <span class="nav-text">查看当前系统是否安装过JDK：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果有JDK，卸载："><span class="nav-number">4.1.2.</span> <span class="nav-text">如果有JDK，卸载：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传并解压安装包："><span class="nav-number">4.1.3.</span> <span class="nav-text">上传并解压安装包：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置JDK环境变量："><span class="nav-number">4.1.4.</span> <span class="nav-text">配置JDK环境变量：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看java版本："><span class="nav-number">4.1.5.</span> <span class="nav-text">查看java版本：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、安装MySQL并配置"><span class="nav-number">4.2.</span> <span class="nav-text">2、安装MySQL并配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql的安装"><span class="nav-number">4.2.1.</span> <span class="nav-text">mysql的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#官网下载安装mysql-server"><span class="nav-number">4.2.2.</span> <span class="nav-text">官网下载安装mysql-server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装成功后重启mysql服务"><span class="nav-number">4.2.3.</span> <span class="nav-text">安装成功后重启mysql服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初次安装mysql，root账号没有密码"><span class="nav-number">4.2.4.</span> <span class="nav-text">初次安装mysql，root账号没有密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装完后mariadb自动被替换了，将不再生效"><span class="nav-number">4.2.5.</span> <span class="nav-text">安装完后mariadb自动被替换了，将不再生效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置mysql"><span class="nav-number">4.2.6.</span> <span class="nav-text">配置mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试mysql启动停止"><span class="nav-number">4.2.7.</span> <span class="nav-text">测试mysql启动停止</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、安装Tomcat并配置"><span class="nav-number">4.3.</span> <span class="nav-text">3、安装Tomcat并配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解析Tomact"><span class="nav-number">4.3.1.</span> <span class="nav-text">解析Tomact</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">4.3.2.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置tomcat的catalina-sh文件"><span class="nav-number">4.3.3.</span> <span class="nav-text">配置tomcat的catalina.sh文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装tomcat服务"><span class="nav-number">4.3.4.</span> <span class="nav-text">安装tomcat服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试tomcat的启动和停用"><span class="nav-number">4.3.5.</span> <span class="nav-text">测试tomcat的启动和停用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防火墙配置"><span class="nav-number">4.3.6.</span> <span class="nav-text">防火墙配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、更多配置"><span class="nav-number">5.</span> <span class="nav-text">五、更多配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念的理解"><span class="nav-number">1.</span> <span class="nav-text">基本概念的理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于JSP-Servlet中的相对路径和绝对路径"><span class="nav-number">2.</span> <span class="nav-text">关于JSP/Servlet中的相对路径和绝对路径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器端的地址"><span class="nav-number">2.1.</span> <span class="nav-text">服务器端的地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端的地址"><span class="nav-number">2.2.</span> <span class="nav-text">客户端的地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#站点根目录和css路径问题"><span class="nav-number">2.3.</span> <span class="nav-text">站点根目录和css路径问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获得JSP-Servlet中当前应用的相对路径和绝对路径"><span class="nav-number">3.</span> <span class="nav-text">获得JSP/Servlet中当前应用的相对路径和绝对路径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP中获得当前应用的相对路径和绝对路径"><span class="nav-number">3.1.</span> <span class="nav-text">JSP中获得当前应用的相对路径和绝对路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Servlet中获得当前应用的相对路径和绝对路径"><span class="nav-number">3.2.</span> <span class="nav-text">Servlet中获得当前应用的相对路径和绝对路径</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JAVA的Class中获得相对路径，绝对路径"><span class="nav-number">4.</span> <span class="nav-text">JAVA的Class中获得相对路径，绝对路径</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单独的Java类中获得绝对路径"><span class="nav-number">4.1.</span> <span class="nav-text">单独的Java类中获得绝对路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器中的Java类获得当前路径"><span class="nav-number">4.2.</span> <span class="nav-text">服务器中的Java类获得当前路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Weblogic"><span class="nav-number">4.2.1.</span> <span class="nav-text">Weblogic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tomcat"><span class="nav-number">4.2.2.</span> <span class="nav-text">Tomcat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何读相对路径哪"><span class="nav-number">4.2.3.</span> <span class="nav-text">如何读相对路径哪?</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
