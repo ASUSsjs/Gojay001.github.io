@@ -8,14 +8,14 @@
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>学习 思考 沉淀</description>
-    <pubDate>Thu, 23 Nov 2017 07:08:22 GMT</pubDate>
+    <pubDate>Fri, 24 Nov 2017 05:10:24 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title></title>
+      <title>跟我学Shiro（三）-授权</title>
       <link>http://yoursite.com/2017/11/23/%E8%B7%9F%E6%88%91%E5%AD%A6Shiro%EF%BC%88%E4%B8%89%EF%BC%89-%E6%8E%88%E6%9D%83/</link>
       <guid>http://yoursite.com/2017/11/23/%E8%B7%9F%E6%88%91%E5%AD%A6Shiro%EF%BC%88%E4%B8%89%EF%BC%89-%E6%8E%88%E6%9D%83/</guid>
-      <pubDate>Thu, 23 Nov 2017 06:48:37 GMT</pubDate>
+      <pubDate>Thu, 23 Nov 2017 09:06:29 GMT</pubDate>
       <description>
       
         &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;授权&lt;/strong&gt;：也叫访问控制，即在应用中控制谁能访问哪些资源（如访问页面/编辑数据/页面操作等）。在授权中需了解的几个关键对象：&lt;code&gt;主体&lt;/code&gt;（Subject）、&lt;code&gt;资源&lt;/code&gt;（Resource）、&lt;code&gt;权限&lt;/code&gt;（Permission）、&lt;code&gt;角色&lt;/code&gt;（Role）。&lt;/p&gt;
