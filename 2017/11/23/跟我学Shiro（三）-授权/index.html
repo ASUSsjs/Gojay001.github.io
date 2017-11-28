@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.3">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Java Web,Shiro,授权," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="大迷毛|成长录" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="简介授权：也叫访问控制，即在应用中控制谁能访问哪些资源（如访问页面/编辑数据/页面操作等）。在授权中需了解的几个关键对象：主体（Subject）、资源（Resource）、权限（Permission）、角色（Role）。  主体：即访问应用的用户，在Shiro中使用Subject代表该用户。用户只有授权后才允许访问相应的资源。 资源：在应用中用户可以访问的任何东西，比如访问JSP页面、查看/编辑某">
+<meta name="keywords" content="Java Web,Shiro,授权">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟我学Shiro（三）-授权">
+<meta property="og:url" content="http://yoursite.com/2017/11/23/跟我学Shiro（三）-授权/index.html">
+<meta property="og:site_name" content="大迷毛|成长录">
+<meta property="og:description" content="简介授权：也叫访问控制，即在应用中控制谁能访问哪些资源（如访问页面/编辑数据/页面操作等）。在授权中需了解的几个关键对象：主体（Subject）、资源（Resource）、权限（Permission）、角色（Role）。  主体：即访问应用的用户，在Shiro中使用Subject代表该用户。用户只有授权后才允许访问相应的资源。 资源：在应用中用户可以访问的任何东西，比如访问JSP页面、查看/编辑某">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2017/11/23/跟我学Shiro（三）-授权/3-1.png">
+<meta property="og:updated_time" content="2017-11-24T05:10:24.548Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟我学Shiro（三）-授权">
+<meta name="twitter:description" content="简介授权：也叫访问控制，即在应用中控制谁能访问哪些资源（如访问页面/编辑数据/页面操作等）。在授权中需了解的几个关键对象：主体（Subject）、资源（Resource）、权限（Permission）、角色（Role）。  主体：即访问应用的用户，在Shiro中使用Subject代表该用户。用户只有授权后才允许访问相应的资源。 资源：在应用中用户可以访问的任何东西，比如访问JSP页面、查看/编辑某">
+<meta name="twitter:image" content="http://yoursite.com/2017/11/23/跟我学Shiro（三）-授权/3-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":10,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/23/跟我学Shiro（三）-授权/"/>
+
+
+
+
+
+  <title>跟我学Shiro（三）-授权 | 大迷毛|成长录</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">大迷毛|成长录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">NEVER STOP!</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/23/跟我学Shiro（三）-授权/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gojay">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大迷毛|成长录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">跟我学Shiro（三）-授权</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T17:06:29+08:00">
+                2017-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Shiro/" itemprop="url" rel="index">
+                    <span itemprop="name">Shiro</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/23/跟我学Shiro（三）-授权/" class="leancloud_visitors" data-flag-title="跟我学Shiro（三）-授权">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,460
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>授权</strong>：也叫访问控制，即在应用中控制谁能访问哪些资源（如访问页面/编辑数据/页面操作等）。在授权中需了解的几个关键对象：<code>主体</code>（Subject）、<code>资源</code>（Resource）、<code>权限</code>（Permission）、<code>角色</code>（Role）。</p>
+<ul>
+<li><strong>主体</strong>：即访问应用的用户，在Shiro中使用Subject代表该用户。用户只有授权后才允许访问相应的资源。</li>
+<li><strong>资源</strong>：在应用中用户可以访问的任何东西，比如访问JSP页面、查看/编辑某些数据、访问某个业务方法、打印文本等等都是资源。用户只要授权后才能访问。</li>
+<li><strong>权限</strong>：安全策略中的原子授权单位，通过权限我们可以表示在应用中用户有没有操作某个资源的权力。</li>
+<li><strong>角色</strong>：角色代表了操作集合，可以理解为权限的集合，一般情况下我们会赋予用户角色而不是权限，即这样用户可以拥有一组权限，赋予权限时比较方便。</li>
+<li><strong>隐式角色</strong>：即直接通过角色来验证用户有没有操作权限。</li>
+<li><strong>显式角色</strong>：在程序中通过权限控制谁能访问某个资源，角色聚合一组权限集合。</li>
+</ul>
+<blockquote>
+<p><strong>了解更多</strong>：搜索<code>“RBAC”</code>和<code>“RBAC新解”</code>分别了解<code>“基于角色的访问控制”</code>和<code>“基于资源的访问控制”</code>。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="授权方式"><a href="#授权方式" class="headerlink" title="授权方式"></a>授权方式</h1><blockquote>
+<p>Shiro支持三种方式的授权。</p>
+</blockquote>
+<h2 id="编程式"><a href="#编程式" class="headerlink" title="编程式"></a>编程式</h2><p>通过写if/else授权代码块完成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Subject subject = SecurityUtils.getSubject();  </div><div class="line">if(subject.hasRole(“admin”)) &#123;  </div><div class="line">    //有权限  </div><div class="line">&#125; else &#123;  </div><div class="line">    //无权限  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="注解式"><a href="#注解式" class="headerlink" title="注解式"></a>注解式</h2><p>通过在执行的Java方法上放置相应的注解完成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@RequiresRoles(&quot;admin&quot;)  </div><div class="line">public void hello() &#123;  </div><div class="line">    //有权限  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>没有权限将抛出相应的异常。</p>
+<h2 id="JSP-GSP标签"><a href="#JSP-GSP标签" class="headerlink" title="JSP/GSP标签"></a>JSP/GSP标签</h2><p>在JSP/GSP页面通过相应的标签完成：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;shiro:hasRole name=&quot;admin&quot;&gt;  </div><div class="line">&lt;!— 有权限 —&gt;  </div><div class="line">&lt;/shiro:hasRole&gt;</div></pre></td></tr></table></figure></p>
+<h1 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h1><h2 id="基于角色的访问控制（隐式角色）"><a href="#基于角色的访问控制（隐式角色）" class="headerlink" title="基于角色的访问控制（隐式角色）"></a>基于角色的访问控制（隐式角色）</h2><h3 id="在ini配置文件配置用户拥有的角色"><a href="#在ini配置文件配置用户拥有的角色" class="headerlink" title="在ini配置文件配置用户拥有的角色"></a>在ini配置文件配置用户拥有的角色</h3><blockquote>
+<p>shiro-role.ini</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[users]</div><div class="line">root=root,role1,role2</div><div class="line">gojay=test,role1</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>规则</strong>：<code>“用户名=密码,角色1，角色2”</code>，如果需要在应用中判断用户是否有相应角色，就需要在相应的Realm中返回角色信息；也就是说<code>Shiro不负责维护用户-角色信息</code>，需要应用提供，Shiro只是提供相应的接口方便验证。</p>
+</blockquote>
+<h3 id="测试用例"><a href="#测试用例" class="headerlink" title="测试用例"></a>测试用例</h3><blockquote>
+<p>com.github.gojay001.test.RoleTest</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void testHasRole() &#123;</div><div class="line">    login(&quot;classpath:shiro-role.ini&quot;, &quot;root&quot;, &quot;root&quot;);</div><div class="line">    // 判断拥有角色：role1</div><div class="line">    Assert.assertTrue(subject().hasRole(&quot;role1&quot;));</div><div class="line">    // 判断拥有角色：role1 and role2</div><div class="line">    Assert.assertTrue(subject().hasAllRoles(Arrays.asList(&quot;role1&quot;, &quot;role2&quot;)));</div><div class="line">    // 判断拥有角色：role1 and role2 and !role3</div><div class="line">    boolean[] result = subject().hasRoles(Arrays.asList(&quot;role1&quot;, &quot;role2&quot;, &quot;role3&quot;));</div><div class="line">    Assert.assertEquals(true, result[0]);</div><div class="line">    Assert.assertEquals(true, result[1]);</div><div class="line">    Assert.assertEquals(false, result[2]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Shiro提供了<code>hasRole/hasAllRoles</code>用于判断用户是否拥有某个角色/某些权限；但是没有提供如hashAnyRole用于判断是否有某些权限中的某一个。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test(expected = UnauthorizedException.class)</div><div class="line">public void testCheckRole() &#123;</div><div class="line">    login(&quot;classpath:shiro-role.ini&quot;, &quot;root&quot;, &quot;root&quot;);</div><div class="line">    // 断言拥有角色：role1</div><div class="line">    subject().checkRole(&quot;role1&quot;);</div><div class="line">    // 断言拥有角色：role1 and role3 失败抛出异常</div><div class="line">    subject().checkRoles(&quot;role1&quot;, &quot;role3&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Shiro提供的<code>checkRole/checkRoles</code>和<code>hasRole/hasAllRoles</code>不同的地方是它在判断为假的情况下会<code>抛出UnauthorizedException异常</code>。</p>
+</blockquote>
+<p><strong>基于角色的访问控制</strong>（即隐式角色）的缺点：如果很多地方进行了角色判断，但是有一天不需要了那么就需要修改相应代码把<code>所有相关的地方</code>进行删除；这就是粗粒度造成的问题。</p>
+<h2 id="基于资源的访问控制（显式角色）"><a href="#基于资源的访问控制（显式角色）" class="headerlink" title="基于资源的访问控制（显式角色）"></a>基于资源的访问控制（显式角色）</h2><h3 id="在ini配置文件配置用户拥有的角色及角色-权限关系"><a href="#在ini配置文件配置用户拥有的角色及角色-权限关系" class="headerlink" title="在ini配置文件配置用户拥有的角色及角色-权限关系"></a>在ini配置文件配置用户拥有的角色及角色-权限关系</h3><blockquote>
+<p>shiro-permission.ini</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[users]</div><div class="line">root=root,role1,role2</div><div class="line">gojay=test,role1</div><div class="line">[roles]</div><div class="line">role1=user:create,user:update</div><div class="line">role2=user:create,user:delete</div></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>规则</strong>：<code>“用户名=密码，角色1，角色2”“角色=权限1，权限2”</code>，即首先根据用户名找到角色，然后根据角色再找到权限；即角色是权限集合；Shiro同样不进行权限的维护，需要我们通过Realm返回相应的权限信息。只需要维护“用户——角色”之间的关系即可。</p>
+</blockquote>
+<h3 id="测试用例-1"><a href="#测试用例-1" class="headerlink" title="测试用例"></a>测试用例</h3><blockquote>
+<p>com.github.gojay001.test.PermissionTest</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void testIsPermitted() &#123;</div><div class="line">    login(&quot;classpath:shiro-permission.ini&quot;, &quot;root&quot;, &quot;root&quot;);</div><div class="line">    // 判断拥有权限：user:create</div><div class="line">    Assert.assertTrue(subject().isPermitted(&quot;user:create&quot;));</div><div class="line">    // 判断拥有权限：user:update and user:delete</div><div class="line">    Assert.assertTrue(subject().isPermittedAll(&quot;user:update&quot;, &quot;user:delete&quot;));</div><div class="line">    // 判断没有权限：user:view</div><div class="line">    Assert.assertFalse(subject().isPermitted(&quot;user:view&quot;));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Shiro提供了<code>isPermitted</code>和<code>isPermittedAll</code>用于判断用户是否拥有某个权限或所有权限，也<code>没有提供如isPermittedAny</code>用于判断拥有某一个权限的接口。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@Test(expected = UnauthorizedException.class)</div><div class="line">public void testCheckPermission() &#123;</div><div class="line">    login(&quot;classpath:shiro-permission.ini&quot;, &quot;root&quot;, &quot;root&quot;);</div><div class="line">    // 断言拥有权限：user:create</div><div class="line">    subject().checkPermission(&quot;user:create&quot;);</div><div class="line">    // 断言拥有权限：user:delete and user:update</div><div class="line">    subject().checkPermissions(&quot;user:delete&quot;, &quot;user:update&quot;);</div><div class="line">    // 断言拥有权限：user:view 失败抛出异常</div><div class="line">    subject().checkPermissions(&quot;user:view&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p><code>checkPermissions</code>失败的情况下会抛出UnauthorizedException异常。</p>
+</blockquote>
+<p><strong>基于资源的访问控制</strong>（显式角色），也可以叫基于权限的访问控制，这种方式的一般规则是<code>“资源标识符：操作”</code>，即是资源级别的粒度；这种方式的好处就是如果要修改基本都是一个资源级别的修改，不会对其他模块代码产生影响，粒度小。但是实现起来可能稍微复杂点，需要维护“用户——角色，角色——权限（资源：操作）”之间的关系。 </p>
+<h1 id="Permission"><a href="#Permission" class="headerlink" title="Permission"></a>Permission</h1><p><strong>字符串通配符权限</strong><br><strong>规则</strong>：<code>“资源标识符：操作：对象实例ID”</code>  即对哪个资源的哪个实例可以进行什么操作。其默认支持通配符权限字符串，<code>“:”</code>表示资源/操作/实例的分割；<code>“,”</code>表示操作的分割；<code>“*”</code>表示任意资源/操作/实例。</p>
+<h2 id="单个资源单个权限"><a href="#单个资源单个权限" class="headerlink" title="单个资源单个权限"></a>单个资源单个权限</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;system:user:update&quot;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>用户拥有资源<code>“system:user”</code>的<code>“update”</code>权限。</p>
+</blockquote>
+<h2 id="单个资源多个权限"><a href="#单个资源多个权限" class="headerlink" title="单个资源多个权限"></a>单个资源多个权限</h2><p>ini配置文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role41=system:user:update,system:user:delete</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;system:user:update&quot;, &quot;system:user:delete&quot;);</div></pre></td></tr></table></figure></p>
+<p>可以简写为：<code>&quot;system:user:update,delete&quot;</code></p>
+<blockquote>
+<p>用户拥有资源<code>“system:user”</code>的<code>“update”</code>和<code>“delete”</code>权限。</p>
+</blockquote>
+<h2 id="单个资源全部权限"><a href="#单个资源全部权限" class="headerlink" title="单个资源全部权限"></a>单个资源全部权限</h2><p>ini配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role51=&quot;system:user:create,update,delete,view&quot;</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;system:user:create,delete,update:view&quot;);</div></pre></td></tr></table></figure></p>
+<p>可以简写为：<code>system:user:*</code></p>
+<blockquote>
+<p>用户拥有资源<code>“system:user”</code>的<code>“create”</code>、<code>“update”</code>、<code>“delete”</code>和<code>“view”</code>所有权限。</p>
+</blockquote>
+<h2 id="所有资源全部权限"><a href="#所有资源全部权限" class="headerlink" title="所有资源全部权限"></a>所有资源全部权限</h2><p>ini配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role61=*:view</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;user:view&quot;);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>用户拥有所有资源的<code>“view”</code>所有权限。</p>
+</blockquote>
+<h2 id="实例级别的权限"><a href="#实例级别的权限" class="headerlink" title="实例级别的权限"></a>实例级别的权限</h2><h3 id="单个实例单个权限"><a href="#单个实例单个权限" class="headerlink" title="单个实例单个权限"></a>单个实例单个权限</h3><p>ini配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role71=user:view:1</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;user:view:1&quot;);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>对资源user的1实例拥有view权限。</p>
+</blockquote>
+<h3 id="单个实例多个权限"><a href="#单个实例多个权限" class="headerlink" title="单个实例多个权限"></a>单个实例多个权限</h3><p>ini配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role72=&quot;user:update,delete:1&quot;</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;user:delete,update:1&quot;);  </div><div class="line">subject().checkPermissions(&quot;user:update:1&quot;, &quot;user:delete:1&quot;);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>对资源user的1实例拥有update、delete权限。</p>
+</blockquote>
+<h3 id="单个实例所有权限"><a href="#单个实例所有权限" class="headerlink" title="单个实例所有权限"></a>单个实例所有权限</h3><p>ini配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role73=user:*:1</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;user:update:1&quot;, &quot;user:delete:1&quot;, &quot;user:view:1&quot;);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>对资源user的1实例拥有所有权限。</p>
+</blockquote>
+<h3 id="所有实例单个权限"><a href="#所有实例单个权限" class="headerlink" title="所有实例单个权限"></a>所有实例单个权限</h3><p>ini配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role74=user:auth:*</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;user:auth:1&quot;, &quot;user:auth:2&quot;);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>对资源user的1实例拥有所有权限。</p>
+</blockquote>
+<h3 id="所有实例所有权限"><a href="#所有实例所有权限" class="headerlink" title="所有实例所有权限"></a>所有实例所有权限</h3><p>ini配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">role75=user:*:*</div></pre></td></tr></table></figure></p>
+<p>通过判断：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">subject().checkPermissions(&quot;user:view:1&quot;, &quot;user:auth:2&quot;);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>对资源user的1实例拥有所有权限。</p>
+</blockquote>
+<h2 id="Shiro对权限字符串缺失部分的处理"><a href="#Shiro对权限字符串缺失部分的处理" class="headerlink" title="Shiro对权限字符串缺失部分的处理"></a>Shiro对权限字符串缺失部分的处理</h2><ul>
+<li>如<code>user:view</code> 等价于 <code>user:view:*</code>；<br><code>organization</code> 等价于 <code>organization:*</code> 或者 <code>organization:*:*</code>。<br>可以这么理解，这种方式实现了<strong>前缀匹配</strong>。</li>
+<li>如<code>user:*</code> 可以匹配 <code>user:delete</code>；<br><code>user:delete</code> 可以匹配 <code>user:delete:1</code>；<br><code>user:*:1</code> 可以匹配 <code>user:view:1</code>；<br><code>user</code> 可以匹配 <code>user:view</code> 或 <code>user:view:1</code>等。<br>即*可以匹配所有，不加*可以进行前缀匹配；</li>
+<li>如<code>*:view</code> 不能匹配 <code>system:user:view</code>；需要使用 <code>*:*:view</code>；<br>即<strong>后缀匹配</strong>必须指定前缀（多个冒号就需要多个*来匹配）。</li>
+</ul>
+<h2 id="WildcardPermission"><a href="#WildcardPermission" class="headerlink" title="WildcardPermission"></a>WildcardPermission</h2><p>如下两种方式是等价的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">subject().checkPermission(&quot;menu:view:1&quot;);  </div><div class="line">subject().checkPermission(new WildcardPermission(&quot;menu:view:1&quot;));</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>因此没什么必要的话使用字符串更方便。</p>
+</blockquote>
+<h2 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h2><p><code>通配符匹配</code>方式比<code>字符串匹配</code>来说是更复杂的，因此需要花费更长时间，但是一般系统的权限不会太多，且可以配合缓存来提供其性能，如果这样性能还达不到要求我们可以实现位操作算法实现性能更好的权限匹配。另外实例级别的权限验证如果数据量太大也不建议使用，可能造成查询权限及匹配变慢。可以考虑比如在sql查询时加上权限字符串之类的方式在查询时就完成了权限匹配。</p>
+<h1 id="授权流程"><a href="#授权流程" class="headerlink" title="授权流程"></a>授权流程</h1><p><img src="/2017/11/23/跟我学Shiro（三）-授权/3-1.png" alt="跟我学Shiro（三）-授权/3-1.png"></p>
+<h2 id="流程如下："><a href="#流程如下：" class="headerlink" title="流程如下："></a>流程如下：</h2><blockquote>
+<ol>
+<li>首先调用<code>Subject.isPermitted*/hasRole*</code>接口，其会委托给SecurityManager，而<code>SecurityManager</code>接着会委托给<code>Authorizer</code>；</li>
+<li><code>Authorizer</code>是真正的授权者；如果我们调用如<code>isPermitted(“user:view”)</code>，其首先会通过<code>PermissionResolver</code>把字符串转换成相应的<code>Permission实例</code>；</li>
+<li>在进行授权之前，其会<code>调用相应的Realm</code>获取Subject相应的<code>角色/权限</code>用于匹配传入的角色/权限；</li>
+<li><code>Authorizer</code>会<code>判断</code>Realm的角色/权限是否和传入的<code>匹配</code>，如果有<code>多个Realm</code>，会委托给<code>ModularRealmAuthorizer</code>进行循环判断，如果匹配如isPermitted<em>/hasRole</em>会返回true，否则返回false表示授权失败。</li>
+</ol>
+</blockquote>
+<ul>
+<li>ModularRealmAuthorizer进行多Realm匹配流程：</li>
+</ul>
+<blockquote>
+<ol>
+<li>首先检查相应的<code>Realm</code>是否实现了<code>Authorizer</code>；</li>
+<li>如果实现了Authorizer，那么接着调用其相应的<code>isPermitted*/hasRole*接口</code>进行匹配；</li>
+<li>如果有一个<code>Realm匹配</code>那么将返回true，否则返回false。</li>
+</ol>
+</blockquote>
+<ul>
+<li>如果Realm进行授权的话，应该继承AuthorizingRealm，其流程是：</li>
+</ul>
+<blockquote>
+<ol>
+<li>如果调用<code>hasRole*</code>，则直接获取<code>AuthorizationInfo.getRoles()</code>与传入的角色比较即可；</li>
+<li>如果调用如<code>isPermitted(“user:view”)</code>，首先通过<code>PermissionResolver</code>将权限字符串转换成相应的<code>Permission实例</code>，默认使用<code>WildcardPermissionResolver</code>，即转换为通配符的<code>WildcardPermission</code>；</li>
+<li>通过<code>AuthorizationInfo.getObjectPermissions()</code>得到<code>Permission实例集合</code>；通过<code>AuthorizationInfo. getStringPermissions()</code>得到字符串集合并通过PermissionResolver解析为<code>Permission实例</code>；然后获取用户的角色，并通过<code>RolePermissionResolver</code>解析角色对应的<code>权限集合</code>（默认没有实现，可以自己提供）；</li>
+<li>接着调用<code>Permission. implies(Permission p)</code>逐个与传入的权限比较，如果有<code>匹配</code>的则返回true，否则false。</li>
+</ol>
+</blockquote>
+<h1 id="Authorizer"><a href="#Authorizer" class="headerlink" title="Authorizer"></a>Authorizer</h1><p><strong>Authorizer</strong>的职责是进行授权（访问控制），提供了相应的角色/权限判断接口。<code>SecurityManager</code>继承了<code>Authorizer接口</code>，且提供了<code>ModularRealmAuthorizer</code>用于多Realm时的授权匹配。<br><strong>PermissionResolver</strong>用于解析权限字符串到Permission实例。<br><strong>RolePermissionResolver</strong>用于根据角色解析相应的权限集合。</p>
+<ul>
+<li><p>可以通过如下ini配置更改<code>Authorizer</code>实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">authorizer=org.apache.shiro.authz.ModularRealmAuthorizer  </div><div class="line">securityManager.authorizer=$authorizer</div></pre></td></tr></table></figure>
+</li>
+<li><p>设置<code>ModularRealmAuthorizer</code>的<code>permissionResolver</code>，其会自动设置到相应的Realm上（其实现了<code>PermissionResolverAware</code>接口），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">permissionResolver=org.apache.shiro.authz.permission.WildcardPermissionResolver  </div><div class="line">authorizer.permissionResolver=$permissionResolver</div></pre></td></tr></table></figure>
+</li>
+<li><p>设置<code>ModularRealmAuthorizer</code>的<code>rolePermissionResolver</code>，其会自动设置到相应的Realm上（其实现了<code>RolePermissionResolverAware</code>接口），如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rolePermissionResolver=com.github.gojay001.permission.MyRolePermissionResolver  </div><div class="line">authorizer.rolePermissionResolver=$rolePermissionResolver</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><h3 id="ini配置"><a href="#ini配置" class="headerlink" title="ini配置"></a>ini配置</h3><blockquote>
+<p>shiro-jdbc-authorizer.ini</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[main]</div><div class="line">#自定义authorizer</div><div class="line">authorizer=org.apache.shiro.authz.ModularRealmAuthorizer</div><div class="line">#自定义permissionResolver</div><div class="line">#permissionResolver=org.apache.shiro.authz.permission.WildcardPermissionResolver</div><div class="line">permissionResolver=com.github.gojay001.permission.BitAndWildPermissionResolver</div><div class="line">authorizer.permissionResolver=$permissionResolver</div><div class="line">#自定义rolePermissionResolver</div><div class="line">rolePermissionResolver=com.github.gojay001.permission.MyRolePermissionResolver</div><div class="line">authorizer.rolePermissionResolver=$rolePermissionResolver</div><div class="line"></div><div class="line">securityManager.authorizer=$authorizer</div><div class="line"></div><div class="line">#自定义realm 一定要放在securityManager.authorizer赋值之后</div><div class="line">#因为调用setRealms会将realms设置给authorizer，并给各个Realm设置permissionResolver和rolePermissionResolver</div><div class="line">jdbcRealm=org.apache.shiro.realm.jdbc.JdbcRealm</div><div class="line">dataSource=com.alibaba.druid.pool.DruidDataSource</div><div class="line">dataSource.driverClassName=com.mysql.jdbc.Driver</div><div class="line">dataSource.url=jdbc:mysql://localhost:3306/shiro</div><div class="line">dataSource.username=root</div><div class="line">dataSource.password=root</div><div class="line">jdbcRealm.dataSource=$dataSource</div><div class="line">jdbcRealm.permissionsLookupEnabled=true</div><div class="line">securityManager.realms=$jdbcRealm</div></pre></td></tr></table></figure>
+<blockquote>
+<p>不能使用<code>IniSecurityManagerFactory</code>创建的<code>IniRealm</code>，因为其初始化顺序的问题可能造成后续的初始化Permission造成影响。</p>
+</blockquote>
+<h3 id="定义BitAndWildPermissionResolver及BitPermission"><a href="#定义BitAndWildPermissionResolver及BitPermission" class="headerlink" title="定义BitAndWildPermissionResolver及BitPermission"></a>定义BitAndWildPermissionResolver及BitPermission</h3><blockquote>
+<p><strong>BitPermission</strong>用于实现位移方式的权限，如规则是：<br>权限字符串格式：<code>+资源字符串+权限位+实例ID</code>；以+开头中间通过+分割；权限：<code>0 表示所有权限</code>；<code>1 新增</code>（二进制：0001）、<code>2 修改</code>（二进制：0010）、<code>4 删除</code>（二进制：0100）、<code>8 查看</code>（二进制：1000）；如 <code>+user+10</code> 表示对资源user拥有<code>修改/查看</code>权限。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">public class BitPermission implements Permission &#123;</div><div class="line">    private String resourceIdentify;</div><div class="line">    private int permissionBit;</div><div class="line">    private String instanceId;</div><div class="line"></div><div class="line">    public BitPermission(String permissionString) &#123;</div><div class="line">        String[] array = permissionString.split(&quot;\\+&quot;);</div><div class="line"></div><div class="line">        if (array.length &gt; 1) &#123;</div><div class="line">            resourceIdentify = array[1];</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (StringUtils.isEmpty(resourceIdentify)) &#123;</div><div class="line">            resourceIdentify = &quot;*&quot;;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (array.length &gt; 2) &#123;</div><div class="line">            permissionBit = Integer.valueOf(array[2]);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (array.length &gt; 3) &#123;</div><div class="line">            instanceId = array[3];</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if (StringUtils.isEmpty(instanceId)) &#123;</div><div class="line">            instanceId = &quot;*&quot;;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public boolean implies(Permission permission) &#123;</div><div class="line">        if(!(permission instanceof BitPermission)) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        BitPermission other = (BitPermission) permission;</div><div class="line"></div><div class="line">        if(!(&quot;*&quot;.equals(this.resourceIdentify) || this.resourceIdentify.equals(other.resourceIdentify))) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if(!(this.permissionBit ==0 || (this.permissionBit &amp; other.permissionBit) != 0)) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        if(!(&quot;*&quot;.equals(this.instanceId) || this.instanceId.equals(other.instanceId))) &#123;</div><div class="line">            return false;</div><div class="line">        &#125;</div><div class="line">        return true;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public String toString() &#123;</div><div class="line">        return &quot;BitPermission&#123;&quot; +</div><div class="line">                &quot;resourceIdentify=&apos;&quot; + resourceIdentify + &apos;\&apos;&apos; +</div><div class="line">                &quot;, permissionBit=&quot; + permissionBit +</div><div class="line">                &quot;, instanceId=&apos;&quot; + instanceId + &apos;\&apos;&apos; +</div><div class="line">                &apos;&#125;&apos;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>Permission接口</strong>提供了<code>boolean implies(Permission p)方法</code>用于判断权限匹配的；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class BitAndWildPermissionResolver implements PermissionResolver &#123;  </div><div class="line">    @Override  </div><div class="line">    public Permission resolvePermission(String permissionString) &#123;  </div><div class="line">        if(permissionString.startsWith(&quot;+&quot;)) &#123;  </div><div class="line">            return new BitPermission(permissionString);  </div><div class="line">        &#125;  </div><div class="line">        return new WildcardPermission(permissionString);  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>BitAndWildPermissionResolver</strong>实现了<code>PermissionResolver接口</code>，并根据权限字符串是否以“+”开头来解析权限字符串为BitPermission或WildcardPermission。</p>
+<h3 id="定义MyRolePermissionResolver"><a href="#定义MyRolePermissionResolver" class="headerlink" title="定义MyRolePermissionResolver"></a>定义MyRolePermissionResolver</h3><p><strong>RolePermissionResolver</strong>用于根据角色字符串来解析得到权限集合。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class MyRolePermissionResolver implements RolePermissionResolver &#123;  </div><div class="line">    @Override  </div><div class="line">    public Collection&lt;Permission&gt; resolvePermissionsInRole(String roleString) &#123;  </div><div class="line">        if(&quot;role1&quot;.equals(roleString)) &#123;  </div><div class="line">            return Arrays.asList((Permission)new WildcardPermission(&quot;menu:*&quot;));  </div><div class="line">        &#125;  </div><div class="line">        return null;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="自定义Realm"><a href="#自定义Realm" class="headerlink" title="自定义Realm"></a>自定义Realm</h3><p>使用<strong>JdbcRealm</strong>，需要做的操作如下：</p>
+<ul>
+<li>执行<code>sql/shiro-init-data.sql</code> 插入相关的权限数据；</li>
+<li>使用<code>shiro-jdbc-authorizer.ini配置文件</code>，需要<code>设置jdbcRealm.permissionsLookupEnabled为true</code>来开启权限查询。</li>
+</ul>
+<blockquote>
+<p>这里也可以自定义实现Realm，可参考com.github.gojay001.realm.MyRealm</p>
+</blockquote>
+<h3 id="测试用例-2"><a href="#测试用例-2" class="headerlink" title="测试用例"></a>测试用例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public void testIsPermitted2() &#123;</div><div class="line">    login(&quot;classpath:shiro-jdbc-authorizer.ini&quot;, &quot;root&quot;, &quot;root&quot;);</div><div class="line">    // 判断拥有权限：user:create</div><div class="line">    Assert.assertTrue(subject().isPermitted(&quot;user1:update&quot;));</div><div class="line">    Assert.assertTrue(subject().isPermitted(&quot;user2:update&quot;));</div><div class="line">    // 通过二进制位的方式表示权限</div><div class="line">    Assert.assertTrue(subject().isPermitted(&quot;+user1+2&quot;));// 新增权限</div><div class="line">    Assert.assertTrue(subject().isPermitted(&quot;+user1+8&quot;));// 查看权限</div><div class="line">    Assert.assertTrue(subject().isPermitted(&quot;+user2+10&quot;));// 新增及查看</div><div class="line"></div><div class="line">    Assert.assertFalse(subject().isPermitted(&quot;+user1+4&quot;));// 没有删除权限</div><div class="line"></div><div class="line">    Assert.assertTrue(subject().isPermitted(&quot;menu:view&quot;));// 通过MyRolePermissionResolver解析得到的权限</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="授权流程-1"><a href="#授权流程-1" class="headerlink" title="授权流程"></a>授权流程</h2><ul>
+<li>Subject.isPermitted*/hasRole*</li>
+<li>SecurityManager</li>
+<li>Authorizer</li>
+<li>PermissionResolver/RolePermissionResolver/Permission</li>
+<li>Realm</li>
+</ul>
+<h2 id="Realm"><a href="#Realm" class="headerlink" title="Realm"></a>Realm</h2><ul>
+<li>user</li>
+<li>role</li>
+<li>permission</li>
+</ul>
+<h2 id="Security"><a href="#Security" class="headerlink" title="Security"></a>Security</h2><ul>
+<li>Authorizer</li>
+<li>PermissionResolver</li>
+<li>RolePermissionResolver</li>
+<li>Realm</li>
+</ul>
+<h2 id="Subject"><a href="#Subject" class="headerlink" title="Subject"></a>Subject</h2><ul>
+<li>hasRole/hasAllRoles</li>
+<li>checkRole/checkRoles</li>
+<li>isPermitted/isPermittedAll</li>
+<li>checkPermission/checkPermissions</li>
+</ul>
+<blockquote>
+<p>参考代码：<a href="https://github.com/Gojay001/Demo/tree/master/ShiroTest/ShiroTest-chapter3" target="_blank" rel="external">https://github.com/Gojay001/Demo/tree/master/ShiroTest/ShiroTest-chapter3</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-Web/" rel="tag"># Java Web</a>
+          
+            <a href="/tags/Shiro/" rel="tag"># Shiro</a>
+          
+            <a href="/tags/授权/" rel="tag"># 授权</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/22/跟我学Shiro（二）-身份认证/" rel="next" title="跟我学Shiro（二）-身份认证">
+                <i class="fa fa-chevron-left"></i> 跟我学Shiro（二）-身份认证
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/28/跟我学Shiro（四）-INI配置/" rel="prev" title="跟我学Shiro（四）-INI配置">
+                跟我学Shiro（四）-INI配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Gojay" />
+            
+              <p class="site-author-name" itemprop="name">Gojay</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Gojay001" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:gao.jay@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/p/1005055839744705" target="_blank" title="WeiBo">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>WeiBo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.jianshu.com/users/a4884b0c6502" target="_blank" title="简书">
+                    
+                      <i class="fa fa-fw fa-book"></i>简书</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/gojay" target="_blank" title="知乎">
+                    
+                      <i class="fa fa-fw fa-key"></i>知乎</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#授权方式"><span class="nav-number">2.</span> <span class="nav-text">授权方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编程式"><span class="nav-number">2.1.</span> <span class="nav-text">编程式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注解式"><span class="nav-number">2.2.</span> <span class="nav-text">注解式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP-GSP标签"><span class="nav-number">2.3.</span> <span class="nav-text">JSP/GSP标签</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#授权"><span class="nav-number">3.</span> <span class="nav-text">授权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于角色的访问控制（隐式角色）"><span class="nav-number">3.1.</span> <span class="nav-text">基于角色的访问控制（隐式角色）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在ini配置文件配置用户拥有的角色"><span class="nav-number">3.1.1.</span> <span class="nav-text">在ini配置文件配置用户拥有的角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试用例"><span class="nav-number">3.1.2.</span> <span class="nav-text">测试用例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于资源的访问控制（显式角色）"><span class="nav-number">3.2.</span> <span class="nav-text">基于资源的访问控制（显式角色）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在ini配置文件配置用户拥有的角色及角色-权限关系"><span class="nav-number">3.2.1.</span> <span class="nav-text">在ini配置文件配置用户拥有的角色及角色-权限关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试用例-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">测试用例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Permission"><span class="nav-number">4.</span> <span class="nav-text">Permission</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单个资源单个权限"><span class="nav-number">4.1.</span> <span class="nav-text">单个资源单个权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单个资源多个权限"><span class="nav-number">4.2.</span> <span class="nav-text">单个资源多个权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单个资源全部权限"><span class="nav-number">4.3.</span> <span class="nav-text">单个资源全部权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#所有资源全部权限"><span class="nav-number">4.4.</span> <span class="nav-text">所有资源全部权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例级别的权限"><span class="nav-number">4.5.</span> <span class="nav-text">实例级别的权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单个实例单个权限"><span class="nav-number">4.5.1.</span> <span class="nav-text">单个实例单个权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单个实例多个权限"><span class="nav-number">4.5.2.</span> <span class="nav-text">单个实例多个权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单个实例所有权限"><span class="nav-number">4.5.3.</span> <span class="nav-text">单个实例所有权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#所有实例单个权限"><span class="nav-number">4.5.4.</span> <span class="nav-text">所有实例单个权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#所有实例所有权限"><span class="nav-number">4.5.5.</span> <span class="nav-text">所有实例所有权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shiro对权限字符串缺失部分的处理"><span class="nav-number">4.6.</span> <span class="nav-text">Shiro对权限字符串缺失部分的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WildcardPermission"><span class="nav-number">4.7.</span> <span class="nav-text">WildcardPermission</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能问题"><span class="nav-number">4.8.</span> <span class="nav-text">性能问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#授权流程"><span class="nav-number">5.</span> <span class="nav-text">授权流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#流程如下："><span class="nav-number">5.1.</span> <span class="nav-text">流程如下：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Authorizer"><span class="nav-number">6.</span> <span class="nav-text">Authorizer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#示例"><span class="nav-number">6.1.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ini配置"><span class="nav-number">6.1.1.</span> <span class="nav-text">ini配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义BitAndWildPermissionResolver及BitPermission"><span class="nav-number">6.1.2.</span> <span class="nav-text">定义BitAndWildPermissionResolver及BitPermission</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义MyRolePermissionResolver"><span class="nav-number">6.1.3.</span> <span class="nav-text">定义MyRolePermissionResolver</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义Realm"><span class="nav-number">6.1.4.</span> <span class="nav-text">自定义Realm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试用例-2"><span class="nav-number">6.1.5.</span> <span class="nav-text">测试用例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#授权流程-1"><span class="nav-number">7.1.</span> <span class="nav-text">授权流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Realm"><span class="nav-number">7.2.</span> <span class="nav-text">Realm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Security"><span class="nav-number">7.3.</span> <span class="nav-text">Security</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Subject"><span class="nav-number">7.4.</span> <span class="nav-text">Subject</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gojay</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数:</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量:</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2147592"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("7jFn3Idqi94rmtO2dMY50qHl-gzGzoHsz", "uRwREM1jDtHg5MuVF1SFl4nz");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

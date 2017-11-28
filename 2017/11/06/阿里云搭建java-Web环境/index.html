@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.3">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Java Web,阿里云," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="大迷毛|成长录" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="一、前言 最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：">
+<meta name="keywords" content="Java Web,阿里云">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云搭建java Web环境">
+<meta property="og:url" content="http://yoursite.com/2017/11/06/阿里云搭建java-Web环境/index.html">
+<meta property="og:site_name" content="大迷毛|成长录">
+<meta property="og:description" content="一、前言 最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-24T05:08:34.958Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里云搭建java Web环境">
+<meta name="twitter:description" content="一、前言 最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":10,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/06/阿里云搭建java-Web环境/"/>
+
+
+
+
+
+  <title>阿里云搭建java Web环境 | 大迷毛|成长录</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">大迷毛|成长录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">NEVER STOP!</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/06/阿里云搭建java-Web环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gojay">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大迷毛|成长录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">阿里云搭建java Web环境</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-06T21:59:10+08:00">
+                2017-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java-Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Java Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/06/阿里云搭建java-Web环境/" class="leancloud_visitors" data-flag-title="阿里云搭建java Web环境">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,112
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><hr>
+<p>最近重新在阿里云上配置了服务器和数据库，今天正好整理一下配置过程并且结合以前在CentOS下搭建java Web的流程，写在这里，以免以后忘记了不知所措。下面进入主题：<br><a id="more"></a></p>
+<h1 id="二、配置阿里云"><a href="#二、配置阿里云" class="headerlink" title="二、配置阿里云"></a>二、配置阿里云</h1><hr>
+<p>阿里云有学生优惠9.9一个月的云服务器，可以直接购买配置，选择CentOS。我在活动期间购买时花了9.9买了.xin域名和域名解析1年，还送了阿里云一整套6个月：服务器、数据库、OSS等等。我目前只在云服务器下搭建java Web环境并发布项目，然后连接的云数据库。服务器和数据库的配置都比较简单，阿里云上也有官方文档可以查看，按着步骤一步步配置下来就行了。</p>
+<h1 id="三、工具准备"><a href="#三、工具准备" class="headerlink" title="三、工具准备"></a>三、工具准备</h1><hr>
+<p>我采用的是在Windows下开发，然后将项目发布在云服务器上。所以，首先需要在Windows下准备几个工具。</p>
+<h2 id="1、SecureCRT"><a href="#1、SecureCRT" class="headerlink" title="1、SecureCRT"></a>1、SecureCRT</h2><p>SecureCRT用于连接云服务器，能够在Windows下直接操作服务器。</p>
+<h3 id="安装SecureCRT："><a href="#安装SecureCRT：" class="headerlink" title="安装SecureCRT："></a>安装SecureCRT：</h3><blockquote>
+<p>下载SecureCRT及注册机<br>安装<br>打开注册机生成key<br>输入注册信息</p>
+</blockquote>
+<p>因为安装SercureCRT比较简单，这里就不过多介绍，在这里附上一个详细的<a href="http://www.cnblogs.com/qingtingzhe/articles/5008902.html" target="_blank" rel="external">安装步骤</a>。</p>
+<h3 id="连接："><a href="#连接：" class="headerlink" title="连接："></a>连接：</h3><blockquote>
+<p>输入ip、username、password建立session；<br>设置session选项；<code>（输出日志文件文件可以保存命令）</code><br>其他一些<a href="http://blog.csdn.net/sfslife/article/details/50923954" target="_blank" rel="external">个性化配置</a>可以参考。</p>
+</blockquote>
+<h2 id="2、FileZilla-FTP-Client"><a href="#2、FileZilla-FTP-Client" class="headerlink" title="2、FileZilla FTP Client"></a>2、FileZilla FTP Client</h2><p>FileZilla用于从Windows上传文件到服务器。</p>
+<h3 id="下载、安装FileZilla"><a href="#下载、安装FileZilla" class="headerlink" title="下载、安装FileZilla"></a>下载、安装FileZilla</h3><p>直接官网下载安装</p>
+<h3 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h3><p>输入sftp://ip，username，password（端口若无修改可以不填）</p>
+<h1 id="四、安装java-Web环境"><a href="#四、安装java-Web环境" class="headerlink" title="四、安装java Web环境"></a>四、安装java Web环境</h1><hr>
+<h2 id="1、安装JDK并配置环境变量"><a href="#1、安装JDK并配置环境变量" class="headerlink" title="1、安装JDK并配置环境变量"></a>1、安装JDK并配置环境变量</h2><h3 id="查看当前系统是否安装过JDK："><a href="#查看当前系统是否安装过JDK：" class="headerlink" title="查看当前系统是否安装过JDK："></a>查看当前系统是否安装过JDK：</h3><p><code>rpm -qa|grep java</code>（某些系统默认安装了JDK1.7）</p>
+<h3 id="如果有JDK，卸载："><a href="#如果有JDK，卸载：" class="headerlink" title="如果有JDK，卸载："></a>如果有JDK，卸载：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum -y remove java java-1.4.2-gcj-compat-1.4.2.0-4ojpp.155</div><div class="line">yum -y remove java-1.6.0-openjdk-1.6.0.0-1.7.b09.el5</div></pre></td></tr></table></figure>
+<h3 id="上传并解压安装包："><a href="#上传并解压安装包：" class="headerlink" title="上传并解压安装包："></a>上传并解压安装包：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /usr/local</div><div class="line">mkdir jdk_home tomcat_home soft</div></pre></td></tr></table></figure>
+<p>通过Filezilla上传tar.gz压缩包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd soft</div><div class="line">tar -xvf jdk-8u144-linux-x64.tar.gz -C /usr/local/jdk_home</div></pre></td></tr></table></figure></p>
+<h3 id="配置JDK环境变量："><a href="#配置JDK环境变量：" class="headerlink" title="配置JDK环境变量："></a>配置JDK环境变量：</h3><ul>
+<li>打开文件：<code>vi /etc/profile</code>  </li>
+<li><p>将下列内容追加到末尾：</p>
+<blockquote>
+<p>#set java environment<br>  JAVA_HOME=/usr/local/jdk_home/jdk1.8<br>  CLASSPATH=.:$JAVA_HOME/lib/tools.jar<br>  PATH=$JAVA_HOME/bin:$PATH<br>  export JAVA_HOME CLASSPATH PATH  </p>
+</blockquote>
+</li>
+<li><p>使文件生效：<code>source /etc/profile</code></p>
+</li>
+</ul>
+<h3 id="查看java版本："><a href="#查看java版本：" class="headerlink" title="查看java版本："></a>查看java版本：</h3><p><code>java-version</code></p>
+<h2 id="2、安装MySQL并配置"><a href="#2、安装MySQL并配置" class="headerlink" title="2、安装MySQL并配置"></a>2、安装MySQL并配置</h2><h3 id="mysql的安装"><a href="#mysql的安装" class="headerlink" title="mysql的安装"></a>mysql的安装</h3><blockquote>
+<p>yum install mysql<br>yum install mysql-devel<br>yum install mysql-server（会出错）</p>
+</blockquote>
+<p><strong>CentOS 7将MySQL从默认的程序列表中移除，用mariadb代替了。</strong></p>
+<h3 id="官网下载安装mysql-server"><a href="#官网下载安装mysql-server" class="headerlink" title="官网下载安装mysql-server"></a>官网下载安装mysql-server</h3><blockquote>
+<p>wget <a href="http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm" target="_blank" rel="external">http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</a><br>rpm -ivh mysql-community-release-el7-5.noarch.rpm<br>yum install mysql-community-server</p>
+</blockquote>
+<h3 id="安装成功后重启mysql服务"><a href="#安装成功后重启mysql服务" class="headerlink" title="安装成功后重启mysql服务"></a>安装成功后重启mysql服务</h3><p><code>service mysqld restart</code></p>
+<h3 id="初次安装mysql，root账号没有密码"><a href="#初次安装mysql，root账号没有密码" class="headerlink" title="初次安装mysql，root账号没有密码"></a>初次安装mysql，root账号没有密码</h3><p><code>mysql -u root</code><br>设置密码：<code>set password for &#39;root&#39;@&#39;localhost&#39; =password(&#39;root&#39;);</code></p>
+<h3 id="安装完后mariadb自动被替换了，将不再生效"><a href="#安装完后mariadb自动被替换了，将不再生效" class="headerlink" title="安装完后mariadb自动被替换了，将不再生效"></a>安装完后mariadb自动被替换了，将不再生效</h3><p><code>rpm -qa |grep mariadb</code></p>
+<h3 id="配置mysql"><a href="#配置mysql" class="headerlink" title="配置mysql"></a>配置mysql</h3><ul>
+<li><p>编码：<br>打开mysql配置文件：<code>vi /etc/my.cnf</code><br>在最后追加编码配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mysql]  </div><div class="line">default-character-set =utf8</div></pre></td></tr></table></figure>
+</li>
+<li><p>远程连接设置：</p>
+<blockquote>
+<p>把在所有数据库的所有表的所有权限赋值给位于所有IP地址的root用户：<br><code>mysql&gt; grant all privileges on *.* to root@&#39;%&#39;identified by &#39;root&#39;;</code><br>如果是新用户而不是root，则要先新建用户:<br><code>mysql&gt; create user &#39;username&#39;@&#39;%&#39; identified by &#39;password&#39;;</code></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="测试mysql启动停止"><a href="#测试mysql启动停止" class="headerlink" title="测试mysql启动停止"></a>测试mysql启动停止</h3><p><code>service mysqld start/stop</code></p>
+<p><code>mysql的安装就到这里了，附上一个[详细说明](http://www.cnblogs.com/starof/p/4680083.html)。</code></p>
+<h2 id="3、安装Tomcat并配置"><a href="#3、安装Tomcat并配置" class="headerlink" title="3、安装Tomcat并配置"></a>3、安装Tomcat并配置</h2><h3 id="解析Tomact"><a href="#解析Tomact" class="headerlink" title="解析Tomact"></a>解析Tomact</h3><blockquote>
+<p>解压：tar -xvf apache-tomcat-9.0.0.M26.tar.gz -C /usr/local/tomcat_home；<br>重命名：mv apache-tomcat-9.0…. tomcat9</p>
+</blockquote>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><blockquote>
+<p><code>vi /etc/profile</code><br>在文件最后追加配置：<br> #tomcat evn<br> CATALINA_HOME=/usr/local/tomcat_home/tomcat9<br> export CATALINA_HOME</p>
+</blockquote>
+<h3 id="配置tomcat的catalina-sh文件"><a href="#配置tomcat的catalina-sh文件" class="headerlink" title="配置tomcat的catalina.sh文件"></a>配置tomcat的catalina.sh文件</h3><blockquote>
+<p>cd $CATALINA_HOME/bin<br>vi catalina.sh<br>找到 # OS specific support，然后在这行下面添加以下配置：<br>CATALINA_HOME=/usr/local/tomcat_home/tomcat9<br>JAVA_HOME=/usr/local/jdk_home/jdk1.8</p>
+</blockquote>
+<h3 id="安装tomcat服务"><a href="#安装tomcat服务" class="headerlink" title="安装tomcat服务"></a>安装tomcat服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd $CATALINA_HOME/bin</div><div class="line">cp catalina.sh /etc/init.d/tomcat</div></pre></td></tr></table></figure>
+<h3 id="测试tomcat的启动和停用"><a href="#测试tomcat的启动和停用" class="headerlink" title="测试tomcat的启动和停用"></a>测试tomcat的启动和停用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">service tomcat start</div><div class="line">service tomcat stop</div></pre></td></tr></table></figure>
+<h3 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a><a href="http://blog.csdn.net/u011846257/article/details/54707864" target="_blank" rel="external">防火墙配置</a></h3><p><code>到这里Tomcat环境就已经搭建完成了，附上[参考文档](http://www.jianshu.com/p/b71296e8b9a7)。</code></p>
+<h1 id="五、更多配置"><a href="#五、更多配置" class="headerlink" title="五、更多配置"></a>五、更多配置</h1><hr>
+<p>这里只是简单地在阿里云的云服务器上搭建了java Web环境，其他的一些配置就需要以后有需求或者遇到困难的时候解决。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-Web/" rel="tag"># Java Web</a>
+          
+            <a href="/tags/阿里云/" rel="tag"># 阿里云</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/30/Markdown基本语法/" rel="next" title="Markdown基本语法">
+                <i class="fa fa-chevron-left"></i> Markdown基本语法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/15/web编码问题详解/" rel="prev" title="web编码问题详解">
+                web编码问题详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Gojay" />
+            
+              <p class="site-author-name" itemprop="name">Gojay</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Gojay001" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:gao.jay@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/p/1005055839744705" target="_blank" title="WeiBo">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>WeiBo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.jianshu.com/users/a4884b0c6502" target="_blank" title="简书">
+                    
+                      <i class="fa fa-fw fa-book"></i>简书</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/gojay" target="_blank" title="知乎">
+                    
+                      <i class="fa fa-fw fa-key"></i>知乎</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、配置阿里云"><span class="nav-number">2.</span> <span class="nav-text">二、配置阿里云</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、工具准备"><span class="nav-number">3.</span> <span class="nav-text">三、工具准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、SecureCRT"><span class="nav-number">3.1.</span> <span class="nav-text">1、SecureCRT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装SecureCRT："><span class="nav-number">3.1.1.</span> <span class="nav-text">安装SecureCRT：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接："><span class="nav-number">3.1.2.</span> <span class="nav-text">连接：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、FileZilla-FTP-Client"><span class="nav-number">3.2.</span> <span class="nav-text">2、FileZilla FTP Client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载、安装FileZilla"><span class="nav-number">3.2.1.</span> <span class="nav-text">下载、安装FileZilla</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立连接"><span class="nav-number">3.2.2.</span> <span class="nav-text">建立连接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、安装java-Web环境"><span class="nav-number">4.</span> <span class="nav-text">四、安装java Web环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、安装JDK并配置环境变量"><span class="nav-number">4.1.</span> <span class="nav-text">1、安装JDK并配置环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看当前系统是否安装过JDK："><span class="nav-number">4.1.1.</span> <span class="nav-text">查看当前系统是否安装过JDK：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果有JDK，卸载："><span class="nav-number">4.1.2.</span> <span class="nav-text">如果有JDK，卸载：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传并解压安装包："><span class="nav-number">4.1.3.</span> <span class="nav-text">上传并解压安装包：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置JDK环境变量："><span class="nav-number">4.1.4.</span> <span class="nav-text">配置JDK环境变量：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看java版本："><span class="nav-number">4.1.5.</span> <span class="nav-text">查看java版本：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、安装MySQL并配置"><span class="nav-number">4.2.</span> <span class="nav-text">2、安装MySQL并配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql的安装"><span class="nav-number">4.2.1.</span> <span class="nav-text">mysql的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#官网下载安装mysql-server"><span class="nav-number">4.2.2.</span> <span class="nav-text">官网下载安装mysql-server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装成功后重启mysql服务"><span class="nav-number">4.2.3.</span> <span class="nav-text">安装成功后重启mysql服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初次安装mysql，root账号没有密码"><span class="nav-number">4.2.4.</span> <span class="nav-text">初次安装mysql，root账号没有密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装完后mariadb自动被替换了，将不再生效"><span class="nav-number">4.2.5.</span> <span class="nav-text">安装完后mariadb自动被替换了，将不再生效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置mysql"><span class="nav-number">4.2.6.</span> <span class="nav-text">配置mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试mysql启动停止"><span class="nav-number">4.2.7.</span> <span class="nav-text">测试mysql启动停止</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、安装Tomcat并配置"><span class="nav-number">4.3.</span> <span class="nav-text">3、安装Tomcat并配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解析Tomact"><span class="nav-number">4.3.1.</span> <span class="nav-text">解析Tomact</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">4.3.2.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置tomcat的catalina-sh文件"><span class="nav-number">4.3.3.</span> <span class="nav-text">配置tomcat的catalina.sh文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装tomcat服务"><span class="nav-number">4.3.4.</span> <span class="nav-text">安装tomcat服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试tomcat的启动和停用"><span class="nav-number">4.3.5.</span> <span class="nav-text">测试tomcat的启动和停用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防火墙配置"><span class="nav-number">4.3.6.</span> <span class="nav-text">防火墙配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、更多配置"><span class="nav-number">5.</span> <span class="nav-text">五、更多配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gojay</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数:</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量:</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2147592"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("7jFn3Idqi94rmtO2dMY50qHl-gzGzoHsz", "uRwREM1jDtHg5MuVF1SFl4nz");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>
