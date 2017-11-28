@@ -37,22 +37,22 @@
     </url>
 
     <url>
-        <loc>http://yoursite.com/tags/Java-Web/</loc>
+        <loc>http://yoursite.com/tags/%E6%8E%88%E6%9D%83/</loc>
         <lastmod>2017-11-24T05:10:24.548Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://yoursite.com/tags/Java-Web/</loc>
+        <lastmod>2017-11-28T06:52:25.159Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://yoursite.com/tags/Shiro/</loc>
-        <lastmod>2017-11-24T05:10:24.548Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://yoursite.com/tags/%E6%8E%88%E6%9D%83/</loc>
-        <lastmod>2017-11-24T05:10:24.548Z</lastmod>
+        <lastmod>2017-11-28T06:52:25.159Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
