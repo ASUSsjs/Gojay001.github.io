@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.3">
+
+
+
+
+
+
+
+  <meta name="keywords" content="Java Web,Shiro,Realm," />
+
+
+
+
+
+  <link rel="alternate" href="/rss2.xml" title="大迷毛|成长录" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Realm定义实体及关系用户-角色之间是多对多关系，角色-权限之间是多对多关系；且用户和权限之间通过角色建立关系。在系统中验证时通过权限验证，角色只是权限集合，即所谓的显式角色。  用户实体包括：编号id、用户名username、密码password、盐salt、是否锁定locked； 角色实体包括：、编号id、角色标识符role、描述description、是否可用available； 权限实体">
+<meta name="keywords" content="Java Web,Shiro,Realm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跟我学Shiro（六）-Realm及相关对象">
+<meta property="og:url" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/index.html">
+<meta property="og:site_name" content="大迷毛|成长录">
+<meta property="og:description" content="Realm定义实体及关系用户-角色之间是多对多关系，角色-权限之间是多对多关系；且用户和权限之间通过角色建立关系。在系统中验证时通过权限验证，角色只是权限集合，即所谓的显式角色。  用户实体包括：编号id、用户名username、密码password、盐salt、是否锁定locked； 角色实体包括：、编号id、角色标识符role、描述description、是否可用available； 权限实体">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-1.png">
+<meta property="og:image" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-2.png">
+<meta property="og:image" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-3.png">
+<meta property="og:image" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-4.png">
+<meta property="og:image" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-5.png">
+<meta property="og:image" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-6.png">
+<meta property="og:updated_time" content="2017-11-29T09:18:20.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跟我学Shiro（六）-Realm及相关对象">
+<meta name="twitter:description" content="Realm定义实体及关系用户-角色之间是多对多关系，角色-权限之间是多对多关系；且用户和权限之间通过角色建立关系。在系统中验证时通过权限验证，角色只是权限集合，即所谓的显式角色。  用户实体包括：编号id、用户名username、密码password、盐salt、是否锁定locked； 角色实体包括：、编号id、角色标识符role、描述description、是否可用available； 权限实体">
+<meta name="twitter:image" content="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":10,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/"/>
+
+
+
+
+
+  <title>跟我学Shiro（六）-Realm及相关对象 | 大迷毛|成长录</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">大迷毛|成长录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">NEVER STOP!</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/29/跟我学Shiro（六）-Realm及相关对象/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gojay">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大迷毛|成长录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">跟我学Shiro（六）-Realm及相关对象</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-29T17:10:58+08:00">
+                2017-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Shiro/" itemprop="url" rel="index">
+                    <span itemprop="name">Shiro</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/29/跟我学Shiro（六）-Realm及相关对象/" class="leancloud_visitors" data-flag-title="跟我学Shiro（六）-Realm及相关对象">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,340
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Realm"><a href="#Realm" class="headerlink" title="Realm"></a>Realm</h1><h2 id="定义实体及关系"><a href="#定义实体及关系" class="headerlink" title="定义实体及关系"></a>定义实体及关系</h2><p><img src="/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-1.png" alt="跟我学Shiro（六）-Realm及相关对象/6-1.png"><br><strong>用户-角色</strong>之间是多对多关系，<strong>角色-权限</strong>之间是多对多关系；且<code>用户</code>和<code>权限</code>之间通过<code>角色</code>建立关系。<br>在系统中验证时通过<code>权限验证</code>，角色只是权限集合，即所谓的显式角色。</p>
+<ul>
+<li><strong>用户</strong>实体包括：编号<code>id</code>、用户名<code>username</code>、密码<code>password</code>、盐<code>salt</code>、是否锁定<code>locked</code>；</li>
+<li><strong>角色</strong>实体包括：、编号<code>id</code>、角色标识符<code>role</code>、描述<code>description</code>、是否可用<code>available</code>；</li>
+<li><strong>权限</strong>实体包括：编号<code>id</code>、权限标识符<code>permission</code>、描述<code>description</code>、是否可用<code>available</code>。</li>
+</ul>
+<blockquote>
+<p>另外还有两个<strong>关系实体</strong>：<br><strong>用户-角色</strong>实体：用户编号、角色编号，且组合为复合主键）；<br><strong>角色-权限</strong>实体：角色编号、权限编号，且组合为复合主键）。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>为了方便数据库操作，使用 <code>org.springframework: spring-jdbc: 4.0.0.RELEASE</code> 依赖。</p>
+<h3 id="定义Service及Dao"><a href="#定义Service及Dao" class="headerlink" title="定义Service及Dao"></a>定义Service及Dao</h3><blockquote>
+<p>为了实现的简单性，只实现必须的功能，其他的可以自己实现即可。</p>
+</blockquote>
+<h4 id="PermissionService"><a href="#PermissionService" class="headerlink" title="PermissionService"></a>PermissionService</h4><p>实现基本的<strong>创建/删除</strong>权限。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface PermissionService &#123;  </div><div class="line">    public Permission createPermission(Permission permission);  </div><div class="line">    public void deletePermission(Long permissionId);  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="RoleService"><a href="#RoleService" class="headerlink" title="RoleService"></a>RoleService</h4><p>相对于PermissionService多了<strong>关联/移除关联角色-权限</strong>功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public interface RoleService &#123;  </div><div class="line">    public Role createRole(Role role);  </div><div class="line">    public void deleteRole(Long roleId);  </div><div class="line">    // 添加角色-权限之间关系  </div><div class="line">    public void correlationPermissions(Long roleId, Long... permissionIds);  </div><div class="line">    // 移除角色-权限之间关系  </div><div class="line">    public void uncorrelationPermissions(Long roleId, Long... permissionIds);  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="UserService"><a href="#UserService" class="headerlink" title="UserService"></a>UserService</h4><p>使用 <strong>findByUsername</strong> 、 <strong>findRoles</strong> 及 <strong>findPermissions</strong> 来查找用户名对应的帐号、角色及权限信息。  </p>
+<blockquote>
+<p>之后的Realm就使用这些方法来查找相关信息。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public interface UserService &#123;  </div><div class="line">    // 创建账户</div><div class="line">    public User createUser(User user);   </div><div class="line">    // 修改密码</div><div class="line">    public void changePassword(Long userId, String newPassword);  </div><div class="line">    // 添加用户-角色关系</div><div class="line">    public void correlationRoles(Long userId, Long... roleIds);   </div><div class="line">    // 移除用户-角色关系</div><div class="line">    public void uncorrelationRoles(Long userId, Long... roleIds);  </div><div class="line">    // 根据用户名查找用户</div><div class="line">    public User findByUsername(String username);  </div><div class="line">    // 根据用户名查找其角色</div><div class="line">    public Set&lt;String&gt; findRoles(String username); </div><div class="line">    // 根据用户名查找其权限  </div><div class="line">    public Set&lt;String&gt; findPermissions(String username); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="UserServiceImpl"><a href="#UserServiceImpl" class="headerlink" title="UserServiceImpl"></a>UserServiceImpl</h4><p>在创建账户及修改密码时直接把<strong>生成密码操作</strong>委托给 <code>PasswordHelper</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public User createUser(User user) &#123;  </div><div class="line">    // 加密密码  </div><div class="line">    passwordUtils.encryptPassword(user);  </div><div class="line">    return userDao.createUser(user);  </div><div class="line">&#125;  </div><div class="line">public void changePassword(Long userId, String newPassword) &#123;  </div><div class="line">    User user =userDao.findOne(userId);  </div><div class="line">    user.setPassword(newPassword);  </div><div class="line">    passwordUtils.encryptPassword(user);  </div><div class="line">    userDao.updateUser(user);  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="PasswordUtils"><a href="#PasswordUtils" class="headerlink" title="PasswordUtils"></a>PasswordUtils</h4><p>之后的CredentialsMatcher需要和此处加密的算法一样。<br>user.getCredentialsSalt()辅助方法返回username+salt。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class PasswordUtils &#123;  </div><div class="line">    private RandomNumberGenerator randomNumberGenerator =  </div><div class="line">     new SecureRandomNumberGenerator();  </div><div class="line">    private String algorithmName = &quot;md5&quot;;  </div><div class="line">    private final int hashIterations = 2;  </div><div class="line">    public void encryptPassword(User user) &#123;  </div><div class="line">        user.setSalt(randomNumberGenerator.nextBytes().toHex());  </div><div class="line">        String newPassword = new SimpleHash(  </div><div class="line">                algorithmName,  </div><div class="line">                user.getPassword(),  </div><div class="line">                ByteSource.Util.bytes(user.getCredentialsSalt()),  </div><div class="line">                hashIterations).toHex();  </div><div class="line">        user.setPassword(newPassword);  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>为了节省篇幅，对于<strong>DAO/Service</strong>的接口及实现，具体请参考源码 <code>com.github.gojay001</code> ；<br>另外参考Service层的测试用例 <code>com.github.gojay001.service.ServiceTest</code> 。</p>
+</blockquote>
+<h3 id="定义Realm"><a href="#定义Realm" class="headerlink" title="定义Realm"></a>定义Realm</h3><h4 id="RetryLimitHashedCredentialsMatcher"><a href="#RetryLimitHashedCredentialsMatcher" class="headerlink" title="RetryLimitHashedCredentialsMatcher"></a>RetryLimitHashedCredentialsMatcher</h4><blockquote>
+<p>com.github.gojay001.credentials</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher &#123;</div><div class="line"></div><div class="line">    private Ehcache passwordRetryCache;</div><div class="line"></div><div class="line">    public RetryLimitHashedCredentialsMatcher() &#123;</div><div class="line">        CacheManager cacheManager = CacheManager.newInstance(CacheManager.class.getClassLoader().getResource(&quot;ehcache.xml&quot;));</div><div class="line">        passwordRetryCache = cacheManager.getCache(&quot;passwordRetryCache&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) &#123;</div><div class="line">        String username = (String)token.getPrincipal();</div><div class="line">        // retry count + 1</div><div class="line">        Element element = passwordRetryCache.get(username);</div><div class="line">        if(element == null) &#123;</div><div class="line">            element = new Element(username , new AtomicInteger(0));</div><div class="line">            passwordRetryCache.put(element);</div><div class="line">        &#125;</div><div class="line">        AtomicInteger retryCount = (AtomicInteger)element.getObjectValue();</div><div class="line">        if(retryCount.incrementAndGet() &gt; 5) &#123;</div><div class="line">            // if retry count &gt; 5 throw</div><div class="line">            throw new ExcessiveAttemptsException();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        boolean matches = super.doCredentialsMatch(token, info);</div><div class="line">        if(matches) &#123;</div><div class="line">            // clear retry count</div><div class="line">            passwordRetryCache.remove(username);</div><div class="line">        &#125;</div><div class="line">        return matches;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="UserRealm"><a href="#UserRealm" class="headerlink" title="UserRealm"></a>UserRealm</h4><blockquote>
+<p>com.github.gojay001.realm</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">public class UserRealm extends AuthorizingRealm &#123;</div><div class="line">    private UserService userService = new UserServiceImpl();</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) &#123;</div><div class="line">        String username = (String)principals.getPrimaryPrincipal();</div><div class="line"></div><div class="line">        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();</div><div class="line">        authorizationInfo.setRoles(userService.findRoles(username));</div><div class="line">        authorizationInfo.setStringPermissions(userService.findPermissions(username));</div><div class="line"></div><div class="line">        return authorizationInfo;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException &#123;</div><div class="line"></div><div class="line">        String username = (String)token.getPrincipal();</div><div class="line"></div><div class="line">        User user = userService.findByUsername(username);</div><div class="line"></div><div class="line">        //没找到帐号</div><div class="line">        if(user == null) &#123;</div><div class="line">            throw new UnknownAccountException();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        //帐号锁定</div><div class="line">        if(Boolean.TRUE.equals(user.getLocked())) &#123;</div><div class="line">            throw new LockedAccountException();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        // 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现</div><div class="line">        return new SimpleAuthenticationInfo(</div><div class="line">                user.getUsername(),</div><div class="line">                user.getPassword(),</div><div class="line">                // salt=username+salt</div><div class="line">                ByteSource.Util.bytes(user.getCredentialsSalt()),</div><div class="line">                //realm name</div><div class="line">                getName()</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>UserRealm父类AuthorizingRealm将获取Subject相关信息分成两步</strong>：获取身份验证信息 <code>doGetAuthenticationInfo</code> 及授权信息 <code>doGetAuthorizationInfo</code> ；</li>
+<li><strong>doGetAuthenticationInfo</strong>：首先根据传入的用户名获取User信息；在组装SimpleAuthenticationInfo信息时，需要传入：身份信息<code>用户名</code>、凭据<code>密文密码</code>、盐<code>username+salt</code>， <em>CredentialsMatcher</em> 使用盐加密传入的明文密码和此处的密文密码进行匹配。</li>
+<li><strong>doGetAuthorizationInfo</strong>：<code>PrincipalCollection</code> 是一个身份集合，因为我们现在就一个Realm，所以直接调用getPrimaryPrincipal得到之前传入的<code>用户名</code>即可；然后根据用户名<code>调用UserService接口</code>获取角色及权限信息。</li>
+</ul>
+<h1 id="AuthenticationToken"><a href="#AuthenticationToken" class="headerlink" title="AuthenticationToken"></a>AuthenticationToken</h1><p><img src="/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-2.png" alt="跟我学Shiro（六）-Realm及相关对象/6-2.png"><br><strong>AuthenticationToken</strong>用于收集用户提交的身份 <code>用户名</code> 及凭据 <code>密码</code> ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public interface AuthenticationToken extends Serializable &#123;  </div><div class="line">    Object getPrincipal(); </div><div class="line">    Object getCredentials(); </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li><strong>RememberMeAuthenticationToken</strong>：提供了 <code>boolean isRememberMe()</code> <strong>记住我</strong>的功能；</li>
+<li><strong>HostAuthenticationToken</strong>：提供了 <code>String getHost()</code> 方法用于获取用户<strong>主机</strong>的功能。</li>
+</ul>
+<blockquote>
+<p>Shiro提供了一个直接拿来用的<strong>UsernamePasswordToken</strong>，用于实现用户名/密码Token组。实现了 <code>RememberMeAuthenticationToken</code> 和 <code>HostAuthenticationToken</code> ，可以实现记住我及主机验证的支持。</p>
+</blockquote>
+<h1 id="AuthenticationInfo"><a href="#AuthenticationInfo" class="headerlink" title="AuthenticationInfo"></a>AuthenticationInfo</h1><p><img src="/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-3.png" alt="跟我学Shiro（六）-Realm及相关对象/6-3.png"><br><strong>AuthenticationInfo</strong>有两个作用：</p>
+<ul>
+<li>如果Realm是 <code>AuthenticatingRealm</code> 子类，则提供给 <code>AuthenticatingRealm</code> 内部使用的 <code>CredentialsMatcher</code> 进行凭据验证；（如果没有继承它需要在自己的Realm中自己实现验证）。</li>
+<li>提供给 <code>SecurityManager</code> 来创建 <code>Subject</code> （提供身份信息）。</li>
+</ul>
+<blockquote>
+<p><strong>MergableAuthenticationInfo</strong>用于提供在多Realm时<code>合并AuthenticationInfo的功能</code>，主要合并Principal。<br>比如 <code>HashedCredentialsMatcher</code> ，在验证时会判断 <code>AuthenticationInfo</code> 是否是<strong>SaltedAuthenticationInfo</strong>子类，来获取盐信息。<br><strong>Account</strong>相当于我们之前的 <code>User</code> ， <code>SimpleAccount</code> 是其一个实现。<br>其他情况一般返回<strong>SimpleAuthenticationInfo</strong>即可。</p>
+</blockquote>
+<h1 id="PrincipalCollection"><a href="#PrincipalCollection" class="headerlink" title="PrincipalCollection"></a>PrincipalCollection</h1><p><img src="/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-4.png" alt="跟我学Shiro（六）-Realm及相关对象/6-4.png"><br>因为我们可以在Shiro中同时配置多个Realm，所以身份信息可能就有多个；因此其提供了<strong>PrincipalCollection</strong>用于<code>聚合这些身份信息</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public interface PrincipalCollection extends Iterable, Serializable &#123;  </div><div class="line">    // 得到主要的身份</div><div class="line">    Object getPrimaryPrincipal();   </div><div class="line">    // 根据身份类型获取第一个</div><div class="line">    &lt;T&gt; T oneByType(Class&lt;T&gt; type);   </div><div class="line">    // 根据身份类型获取一组</div><div class="line">    &lt;T&gt; Collection&lt;T&gt; byType(Class&lt;T&gt; type);   </div><div class="line">    // 转换为List</div><div class="line">    List asList();   </div><div class="line">    // 转换为Set</div><div class="line">    Set asSet();</div><div class="line">    // 根据Realm名字获取</div><div class="line">    Collection fromRealm(String realmName);   </div><div class="line">    // 获取所有身份验证通过的Realm名字</div><div class="line">    Set&lt;String&gt; getRealmNames();   </div><div class="line">    // 判断是否为空</div><div class="line">    boolean isEmpty();  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>getPrimaryPrincipal</strong>：如果只有一个Principal那么直接返回即可，如果有多个Principal，则返回第一个（因为内部使用Map存储，所以可以认为是返回任意一个）；<br><strong>oneByType/byType</strong>：根据<code>凭据的类型</code>返回相应的Principal；<br><strong>fromRealm</strong>根据<code>Realm名字</code>（每个Principal都与一个Realm关联）获取相应的Principal。</p>
+</blockquote>
+<p><strong>MutablePrincipalCollection</strong>是一个可变的PrincipalCollection接口，即提供了如下可变方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public interface MutablePrincipalCollection extends PrincipalCollection &#123;  </div><div class="line">    // 添加Realm-Principal的关联</div><div class="line">    void add(Object principal, String realmName);   </div><div class="line">    // 添加一组Realm-Principal的关联</div><div class="line">    void addAll(Collection principals, String realmName);</div><div class="line">    // 添加PrincipalCollection</div><div class="line">    void addAll(PrincipalCollection principals);</div><div class="line">    // 清空</div><div class="line">    void clear();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="AuthorizationInfo"><a href="#AuthorizationInfo" class="headerlink" title="AuthorizationInfo"></a>AuthorizationInfo</h1><p><img src="/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-5.png" alt="跟我学Shiro（六）-Realm及相关对象/6-5.png"><br><strong>AuthorizationInfo</strong>用于<code>聚合授权信息</code>的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public interface AuthorizationInfo extends Serializable &#123;  </div><div class="line">    // 获取角色字符串信息</div><div class="line">    Collection&lt;String&gt; getRoles();</div><div class="line">    // 获取权限字符串信息</div><div class="line">    Collection&lt;String&gt; getStringPermissions(); </div><div class="line">    // 获取Permission对象信息</div><div class="line">    Collection&lt;Permission&gt; getObjectPermissions(); </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当我们使用 <code>AuthorizingRealm</code> 时，如果身份验证成功，在进行授权时就通过 <code>doGetAuthorizationInfo</code> 方法获取角色/权限信息用于授权验证。  </p>
+<blockquote>
+<p>Shiro提供了一个实现 <strong>SimpleAuthorizationInfo</strong> ，大多数时候使用这个即可。</p>
+</blockquote>
+<h1 id="Subject"><a href="#Subject" class="headerlink" title="Subject"></a>Subject</h1><p><img src="/2017/11/29/跟我学Shiro（六）-Realm及相关对象/6-6.png" alt="跟我学Shiro（六）-Realm及相关对象/6-6.png"><br><strong>Subject</strong>是Shiro的核心对象，基本所有<code>身份验证</code>、<code>授权</code>都是通过Subject完成。</p>
+<h2 id="身份信息获取"><a href="#身份信息获取" class="headerlink" title="身份信息获取"></a>身份信息获取</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// Primary Principal</div><div class="line">Object getPrincipal(); </div><div class="line">// PrincipalCollection</div><div class="line">PrincipalCollection getPrincipals();</div></pre></td></tr></table></figure>
+<h2 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void login(AuthenticationToken token) throws AuthenticationException;  </div><div class="line">boolean isAuthenticated();  </div><div class="line">boolean isRemembered();</div></pre></td></tr></table></figure>
+<h2 id="角色授权验证"><a href="#角色授权验证" class="headerlink" title="角色授权验证"></a>角色授权验证</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">boolean hasRole(String roleIdentifier);  </div><div class="line">boolean[] hasRoles(List&lt;String&gt; roleIdentifiers);  </div><div class="line">boolean hasAllRoles(Collection&lt;String&gt; roleIdentifiers);  </div><div class="line">void checkRole(String roleIdentifier) throws AuthorizationException;  </div><div class="line">void checkRoles(Collection&lt;String&gt; roleIdentifiers) throws AuthorizationException;  </div><div class="line">void checkRoles(String... roleIdentifiers) throws AuthorizationException;</div></pre></td></tr></table></figure>
+<h2 id="权限授权验证"><a href="#权限授权验证" class="headerlink" title="权限授权验证"></a>权限授权验证</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">boolean isPermitted(String permission);  </div><div class="line">boolean isPermitted(Permission permission);  </div><div class="line">boolean[] isPermitted(String... permissions);  </div><div class="line">boolean[] isPermitted(List&lt;Permission&gt; permissions);  </div><div class="line">boolean isPermittedAll(String... permissions);  </div><div class="line">boolean isPermittedAll(Collection&lt;Permission&gt; permissions);  </div><div class="line">void checkPermission(String permission) throws AuthorizationException;  </div><div class="line">void checkPermission(Permission permission) throws AuthorizationException;  </div><div class="line">void checkPermissions(String... permissions) throws AuthorizationException;  </div><div class="line">void checkPermissions(Collection&lt;Permission&gt; permissions) throws AuthorizationException;</div></pre></td></tr></table></figure>
+<h2 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 相当于getSession(true)</div><div class="line">Session getSession(); </div><div class="line">Session getSession(boolean create);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果 <code>create=false</code> 如果没有会话将<code>返回null</code>；而 <code>create=true</code> 如果没有会话会强制<code>创建一个</code>。</p>
+</blockquote>
+<h2 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">void logout();</div></pre></td></tr></table></figure>
+<h2 id="RunAs"><a href="#RunAs" class="headerlink" title="RunAs"></a>RunAs</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">void runAs(PrincipalCollection principals) throws NullPointerException, IllegalStateException;  </div><div class="line">boolean isRunAs();  </div><div class="line">PrincipalCollection getPreviousPrincipals();  </div><div class="line">PrincipalCollection releaseRunAs();</div></pre></td></tr></table></figure>
+<p><strong>RunAs</strong>即实现<strong>允许A假设为B身份进行访问</strong>：  </p>
+<blockquote>
+<p>通过调用 <code>subject.runAs(b)</code> 进行访问；<br>接着调用 <code>subject.getPrincipals</code> 将获取到B的身份；<br>此时调用 <code>isRunAs</code> 将返回true，而a的身份需要通过 <code>subject.getPreviousPrincipals</code> 获取；<br>如果不需要RunAs了调用 <code>subject.releaseRunAs</code> 即可。</p>
+</blockquote>
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;V&gt; V execute(Callable&lt;V&gt; callable) throws ExecutionException;  </div><div class="line">void execute(Runnable runnable);  </div><div class="line">&lt;V&gt; Callable&lt;V&gt; associateWith(Callable&lt;V&gt; callable);  </div><div class="line">Runnable associateWith(Runnable runnable);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在多线程执行中需要传播到相应的线程才能获取到相应的Subject。<br>最简单的办法就是通过 <code>execute(runnable/callable实例)</code> 直接调用；<br>或者通过 <code>associateWith(runnable/callable实例)</code> 得到一个包装后的实例；<br>它们都是通过：把当前线程的Subject绑定过去；在线程执行结束后自动释放。</p>
+</blockquote>
+<p>Subject自己不会实现相应的身份验证/授权逻辑，而是通过DelegatingSubject委托给SecurityManager实现。</p>
+<p>如果想自定义创建，可以通过：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">new Subject.Builder().principals(身份).authenticated(true/false).buildSubject()</div></pre></td></tr></table></figure></p>
+<h2 id="Subject一般流程"><a href="#Subject一般流程" class="headerlink" title="Subject一般流程"></a>Subject一般流程</h2><ul>
+<li><strong>身份验证</strong>（login）</li>
+<li><strong>授权</strong>（hasRole*/isPermitted*或checkRole*/checkPermission*）</li>
+<li>将相应的数据存储到<strong>会话</strong>（Session）</li>
+<li><strong>切换身份</strong>（RunAs）/<strong>多线程</strong>身份传播</li>
+<li><strong>退出</strong></li>
+</ul>
+<blockquote>
+<p>必须的功能就是1、2、5。到目前为止我们就可以使用Shiro进行应用程序的安全控制了，但是还是缺少如对Web验证、Java方法验证等的一些简化实现。</p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="Realm-1"><a href="#Realm-1" class="headerlink" title="Realm"></a>Realm</h2><ul>
+<li>Permission</li>
+<li>Role</li>
+<li>User</li>
+<li>User-Role</li>
+<li>Role-Permission</li>
+</ul>
+<h2 id="AuthenticationToken-1"><a href="#AuthenticationToken-1" class="headerlink" title="AuthenticationToken"></a>AuthenticationToken</h2><ul>
+<li>Principal</li>
+<li>Credentials</li>
+<li>RemeberMeAuthenticationToken</li>
+<li>HostAuthenticationToken</li>
+<li>UsernamePasswordToken</li>
+</ul>
+<h2 id="AuthenticationInfo-1"><a href="#AuthenticationInfo-1" class="headerlink" title="AuthenticationInfo"></a>AuthenticationInfo</h2><ul>
+<li>提供身份信息</li>
+<li>提供凭据验证</li>
+<li>SimpleAuthenticationInfo</li>
+</ul>
+<h2 id="PrincipalCollection-1"><a href="#PrincipalCollection-1" class="headerlink" title="PrincipalCollection"></a>PrincipalCollection</h2><ul>
+<li>Principal</li>
+<li>MutablePrincipalCollection</li>
+<li>PrincipalMap</li>
+</ul>
+<h2 id="AuthorizationInfo-1"><a href="#AuthorizationInfo-1" class="headerlink" title="AuthorizationInfo"></a>AuthorizationInfo</h2><ul>
+<li>Roles</li>
+<li>StringPermissions</li>
+<li>ObjectPermissions</li>
+<li>SimpleAuthorizationInfo</li>
+</ul>
+<h2 id="Subject-1"><a href="#Subject-1" class="headerlink" title="Subject"></a>Subject</h2><ul>
+<li>身份获取</li>
+<li>身份验证</li>
+<li>角色授权</li>
+<li>权限授权</li>
+<li>会话</li>
+<li>退出</li>
+<li>RunAs</li>
+<li>多线程</li>
+</ul>
+<blockquote>
+<p>参考代码： <code>https://github.com/Gojay001/Demo/tree/master/ShiroTest/ShiroTest-chapter6</code></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-Web/" rel="tag"># Java Web</a>
+          
+            <a href="/tags/Shiro/" rel="tag"># Shiro</a>
+          
+            <a href="/tags/Realm/" rel="tag"># Realm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/29/跟我学Shiro（五）-编码、加密/" rel="next" title="跟我学Shiro（五）-编码、加密">
+                <i class="fa fa-chevron-left"></i> 跟我学Shiro（五）-编码、加密
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Gojay" />
+            
+              <p class="site-author-name" itemprop="name">Gojay</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/rss2.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Gojay001" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:gao.jay@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/p/1005055839744705" target="_blank" title="WeiBo">
+                    
+                      <i class="fa fa-fw fa-weibo"></i>WeiBo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="http://www.jianshu.com/users/a4884b0c6502" target="_blank" title="简书">
+                    
+                      <i class="fa fa-fw fa-book"></i>简书</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/gojay" target="_blank" title="知乎">
+                    
+                      <i class="fa fa-fw fa-key"></i>知乎</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Realm"><span class="nav-number">1.</span> <span class="nav-text">Realm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义实体及关系"><span class="nav-number">1.1.</span> <span class="nav-text">定义实体及关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.2.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义Service及Dao"><span class="nav-number">1.2.1.</span> <span class="nav-text">定义Service及Dao</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PermissionService"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">PermissionService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RoleService"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">RoleService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UserService"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">UserService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UserServiceImpl"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">UserServiceImpl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PasswordUtils"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">PasswordUtils</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义Realm"><span class="nav-number">1.2.2.</span> <span class="nav-text">定义Realm</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RetryLimitHashedCredentialsMatcher"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">RetryLimitHashedCredentialsMatcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UserRealm"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">UserRealm</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AuthenticationToken"><span class="nav-number">2.</span> <span class="nav-text">AuthenticationToken</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AuthenticationInfo"><span class="nav-number">3.</span> <span class="nav-text">AuthenticationInfo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PrincipalCollection"><span class="nav-number">4.</span> <span class="nav-text">PrincipalCollection</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AuthorizationInfo"><span class="nav-number">5.</span> <span class="nav-text">AuthorizationInfo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Subject"><span class="nav-number">6.</span> <span class="nav-text">Subject</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#身份信息获取"><span class="nav-number">6.1.</span> <span class="nav-text">身份信息获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#身份验证"><span class="nav-number">6.2.</span> <span class="nav-text">身份验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#角色授权验证"><span class="nav-number">6.3.</span> <span class="nav-text">角色授权验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权限授权验证"><span class="nav-number">6.4.</span> <span class="nav-text">权限授权验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会话"><span class="nav-number">6.5.</span> <span class="nav-text">会话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#退出"><span class="nav-number">6.6.</span> <span class="nav-text">退出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RunAs"><span class="nav-number">6.7.</span> <span class="nav-text">RunAs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程"><span class="nav-number">6.8.</span> <span class="nav-text">多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Subject一般流程"><span class="nav-number">6.9.</span> <span class="nav-text">Subject一般流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Realm-1"><span class="nav-number">7.1.</span> <span class="nav-text">Realm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AuthenticationToken-1"><span class="nav-number">7.2.</span> <span class="nav-text">AuthenticationToken</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AuthenticationInfo-1"><span class="nav-number">7.3.</span> <span class="nav-text">AuthenticationInfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PrincipalCollection-1"><span class="nav-number">7.4.</span> <span class="nav-text">PrincipalCollection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AuthorizationInfo-1"><span class="nav-number">7.5.</span> <span class="nav-text">AuthorizationInfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Subject-1"><span class="nav-number">7.6.</span> <span class="nav-text">Subject</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gojay</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数:</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量:</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2147592"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("7jFn3Idqi94rmtO2dMY50qHl-gzGzoHsz", "uRwREM1jDtHg5MuVF1SFl4nz");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+</body>
+</html>

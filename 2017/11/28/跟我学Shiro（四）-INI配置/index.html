@@ -83,7 +83,7 @@
 <meta property="og:site_name" content="大迷毛|成长录">
 <meta property="og:description" content="SecurityManagerShiro是从根对象 SecurityManager 进行身份验证和授权的，这个对象是线程安全且真个应用只需要一个即可，因此Shiro提供了 SecurityUtils 让我们绑定它为全局的，方便后续操作。  因为Shiro的类都是POJO的，因此都很容易放到任何IoC容器管理。但是和一般的IoC容器的区别在于，Shiro从根对象securityManager开始导航">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-28T06:52:25.159Z">
+<meta property="og:updated_time" content="2017-11-29T09:18:47.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跟我学Shiro（四）-INI配置">
 <meta name="twitter:description" content="SecurityManagerShiro是从根对象 SecurityManager 进行身份验证和授权的，这个对象是线程安全且真个应用只需要一个即可，因此Shiro提供了 SecurityUtils 让我们绑定它为全局的，方便后续操作。  因为Shiro的类都是POJO的，因此都很容易放到任何IoC容器管理。但是和一般的IoC容器的区别在于，Shiro从根对象securityManager开始导航">
@@ -391,7 +391,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,273
+                  1,287
                 </span>
               
 
@@ -474,6 +474,9 @@
 <h2 id="roles-部分"><a href="#roles-部分" class="headerlink" title="[roles]部分"></a>[roles]部分</h2><p>配置角色及权限之间的关系，格式：<code>角色=权限1，权限2</code>；如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[roles]  </div><div class="line">role1=user:create,user:update  </div><div class="line">role2=*</div></pre></td></tr></table></figure></p>
 <p>如果只有角色没有对应的权限，可以不配roles。</p>
 <h2 id="urls-部分"><a href="#urls-部分" class="headerlink" title="[urls]部分"></a>[urls]部分</h2><p>配置url及相应的拦截器之间的关系，格式：<code>url=拦截器[参数]，拦截器[参数]</code>，如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[urls]  </div><div class="line">/admin/** = authc, roles[admin], perms[&quot;permission1&quot;]</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>参考代码： <code>https://github.com/Gojay001/Demo/tree/master/ShiroTest/ShiroTest-chapter4</code></p>
+</blockquote>
 
       
     </div>
@@ -606,7 +609,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -628,7 +631,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
