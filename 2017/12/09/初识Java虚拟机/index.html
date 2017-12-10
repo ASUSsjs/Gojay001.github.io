@@ -86,7 +86,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/12/09/初识Java虚拟机/1.png">
 <meta property="og:image" content="http://yoursite.com/2017/12/09/初识Java虚拟机/2.png">
 <meta property="og:image" content="http://yoursite.com/2017/12/09/初识Java虚拟机/3.png">
-<meta property="og:updated_time" content="2017-12-09T11:18:40.252Z">
+<meta property="og:updated_time" content="2017-12-10T08:13:08.071Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初识Java虚拟机">
 <meta name="twitter:description" content="前言对于Java的学习也有一段时间了，却始终会有一些地方容易混淆，归结原因，还是偏底层的东西不太了解。前段时间便学习了关于Java虚拟机相关的内容，主要从阅读  《深入理解Java虚拟机》 进行总结。 首先Java技术体系主要由：Java第三方框架类库、Java API类库、Java程序设计语言、Class类文件格式、Java 虚拟机构成，把Java API类库、Java程序设计语言、Java虚拟">
@@ -341,6 +341,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -373,7 +395,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  8,074
+                  8,083
                 </span>
               
 
@@ -556,7 +578,7 @@
 <h4 id="被动引用"><a href="#被动引用" class="headerlink" title="被动引用"></a>被动引用</h4><p>所有被动引用类都不会触发初始化。</p>
 <ul>
 <li>通过<strong>子类引用父类的静态字段</strong>，只会触发父类的初始化，而不会触发子类的初始化。</li>
-<li>通过<strong>数组定义来引用类*</strong>，不会触发此类的初始化。</li>
+<li>通过<strong>数组定义来引用类</strong>，不会触发此类的初始化。</li>
 <li><strong>调用类的常量</strong>，由于常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用类，不会触发该类的初始化。</li>
 </ul>
 <blockquote>
@@ -610,13 +632,13 @@
 <li>在<strong>父接口</strong>中查找简单名称和描述符。</li>
 <li>否则，查找失败。</li>
 </ul>
-<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>开始执行类中定义的Java程序代码(字节码)。初始化阶段时<strong>执行类构造器<clinit>()方法</clinit></strong>的过程。</p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>开始执行类中定义的Java程序代码(字节码)。初始化阶段<strong>执行类构造器</strong> <code>&lt;clinit&gt;()方法</code> 的过程。</p>
 <ul>
-<li><clinit>()方法是由编译器自动收集类中的<strong>类变量赋值</strong>和<strong>静态语句块</strong>。静态语句块中只能访问到定义在静态语句块之前变量， <code>之后的变量只能赋值不能访问</code>。</clinit></li>
-<li><clinit>()方法实例构造器<init>()方法不同，<strong>不需要显式调用父类构造器</strong>，<strong>保证父类<clinit>()方法在子类<clinit>()方法前执行</clinit></clinit></strong>。</init></clinit></li>
-<li>由于父类先执行<clinit>()方法，父类定义的<strong>静态语句块</strong>先于子类，第一个被执行<clinit>()方法的类是<strong>java.lang.Object</strong>。</clinit></clinit></li>
-<li><clinit>()方法对呀类或接口<strong>不是必需</strong>的。</clinit></li>
-<li>虚拟机会保证一个类的<clinit>()方法在<strong>多线程环境中正确被加锁、同步</strong>。</clinit></li>
+<li><code>&lt;clinit&gt;()方法</code> 是由编译器自动收集类中的<strong>类变量赋值</strong>和<strong>静态语句块</strong>。静态语句块中只能访问到定义在静态语句块之前变量， <code>之后的变量只能赋值不能访问</code>。</li>
+<li><code>&lt;clinit&gt;()方法</code> 实例构造器 <code>&lt;init&gt;()方法</code> 不同，<strong>不需要显式调用父类构造器</strong>，<strong>保证父类 <code>&lt;clinit&gt;()方法</code> 在子类 <code>&lt;clinit&gt;()方法</code> 前执行</strong>。</li>
+<li>由于父类先执行 <code>&lt;clinit&gt;()方法</code> ，父类定义的<strong>静态语句块</strong>先于子类，第一个被执行 <code>&lt;clinit&gt;()方法</code> 的类是<strong>java.lang.Object</strong>。</li>
+<li><code>&lt;clinit&gt;()方法</code> 对呀类或接口<strong>不是必需</strong>的。</li>
+<li>虚拟机会保证一个类的 <code>&lt;clinit&gt;()方法</code> 在多线程环境中正确被<strong>加锁、同步</strong>。</li>
 </ul>
 <h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><p><strong>类加载器</strong>是实现让<strong>应用程序</strong>自己决定如何去<strong>获取所需要的类</strong>的代码模块。</p>
 <h4 id="类与类加载器"><a href="#类与类加载器" class="headerlink" title="类与类加载器"></a>类与类加载器</h4><p>对于任意一个类，都需要由加载它的类加载器和这个类本身一起确立其在Java虚拟机中的唯一性。</p>
@@ -895,7 +917,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

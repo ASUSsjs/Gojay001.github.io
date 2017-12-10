@@ -73,14 +73,14 @@
 
     <url>
         <loc>http://yoursite.com/tags/Java/</loc>
-        <lastmod>2017-12-09T11:18:40.252Z</lastmod>
+        <lastmod>2017-12-10T08:13:08.071Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://yoursite.com/tags/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/</loc>
-        <lastmod>2017-12-09T11:18:40.252Z</lastmod>
+        <lastmod>2017-12-10T08:13:08.071Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
